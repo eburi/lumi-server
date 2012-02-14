@@ -1,0 +1,35 @@
+var lumi = function(){
+	var WIDTH = 32;
+	var HEIGHT = 32;
+	var FULL_FRAME_SIZE = WIDTH*HEIGHT*3;
+	var INDEXED_FRAME_SIZE = WIDTH*HEIGHT;
+
+	var socket = io.connect('http://localhost');
+
+	sendFrame = function(frame) {
+		if(frame.length != FULL_FRAME_SIZE) {
+			console.log("Frame has the wrong size: " + frame.length + " Expected: " + FULL_FRAME_SIZE);
+			return;
+		}
+		socket.emit('frame', { data: frame });	
+	};
+
+	sendIndexedFrame = function(iframe) {
+		if(iframe.length != INDEXED_FRAME_SIZE) {
+			console.log("Indexed Frame has wrong size: " + iframe.length + " Expected: " + INDEXED_FRAME_SIZE);
+			return;
+		}
+		socke.emit('iframe', { data: iframe });
+	};
+	
+	setPalette = function(palette) {
+			
+	};
+	
+	return {
+		sendFrame: sendFrame,
+		sendIndexedFrame: sendIndexedFrame,
+		setPalette: setPalette
+	}
+}();
+
