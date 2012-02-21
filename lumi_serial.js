@@ -33,8 +33,8 @@ function sendFrame(data) {
     for(var y=0; y < HEIGHT; y++) {
       for(var x=0; x < WIDTH; x++) {			
         var pos = (y * WIDTH + x) * 3;
-        frame[pos    ] = data[pos + 1]; // G
-        frame[pos + 1] = data[pos    ]; // R
+        frame[pos    ] = data[pos    ]; // G
+        frame[pos + 1] = data[pos + 1]; // R
         frame[pos + 2] = data[pos + 2]; // B
       }
     }
@@ -49,8 +49,8 @@ function sendFrame(data) {
         var pos = (y * WIDTH + x);
         var fPos = pos * 3;
         var color = palette[ data[pos] ];
-        frame[fPos    ] = color[1]; // G
-        frame[fPos + 1] = color[0]; // R
+        frame[fPos    ] = color[0]; // R
+        frame[fPos + 1] = color[1]; // G
         frame[fPos + 2] = color[2]; // B
       }
     }

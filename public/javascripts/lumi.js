@@ -4,9 +4,7 @@ var lumi = function(){
 	var FULL_FRAME_SIZE = WIDTH*HEIGHT*3;
 	var INDEXED_FRAME_SIZE = WIDTH*HEIGHT;
 
-
-  // TODO: find host...
-	var socket = io.connect('http://192.168.1.35');
+	var socket = io.connect();
 
 	sendFrame = function(frame) {
 		if(frame.length != FULL_FRAME_SIZE) {
@@ -48,6 +46,7 @@ var lumi = function(){
 		sendFrame: sendFrame,
 		sendIndexedFrame: sendIndexedFrame,
 		setPalette: setPalette,
+
 		test: test
 	}
 }();

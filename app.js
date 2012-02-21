@@ -14,6 +14,25 @@ var lumi = require('./lumi_serial.js');
 var started = Date.now();
 var frames = 0;
 
+io.configure('production', function(){
+  io.enable('browser client etag');
+  io.set('log level', 1);
+
+  io.set('heartbeats', false);
+
+  io.set('transports', [
+    'websocket'
+  , 'flashsocket'
+  , 'htmlfile'
+  , 'xhr-polling'
+  , 'jsonp-polling'
+  ]);
+});
+
+io.configure('development', function(){
+  io.set('transports', ['websocket']);
+});
+
 io.sockets.on('connection', function (socket) {
 //  socket.emit('news', { hello: 'world' });
 //  socket.on('my other event', function (data) {
@@ -25,7 +44,7 @@ io.sockets.on('connection', function (socket) {
     lumi.sendFrame(frame);
 
     if (Date.now() - started > 1000) {
-      console.log("fps: " + frames);
+      console.log(Date.now() + " - fps: " + frames);
       frames = 0;
       started = Date.now(); 
     }
