@@ -12,16 +12,18 @@
 			$(document).ready(function() {
 
 				$('#applyButton').click(function() {
-					var target = document.getElementById("outputCanvas");
-					var code =$('#codeInput').val().trim();
-	
+					var oldCanvas = null;					
+
 					if(procInstance != null) {
 						procInstance.exit();
-						delete procInstance;
-            procInstance = null;
+						oldCanvas = procInstance.externals.canvas;
+						$(oldCanvas).remove();
 					}
 
-					procInstance = new Processing(target, code);	
+					var target = $("#output").append('<canvas id="outputCanvas" height="32" width="32"></canvas>');
+					var code =$('#codeInput').val().trim();
+	
+					procInstance = new Processing("outputCanvas", code);	
           procInstance.externals.sketch.onFrameEnd = function() {
             var imgd = procInstance.toImageData(0,0,procInstance.width,procInstance.height).data;
             var pix = [];
@@ -39,7 +41,8 @@
   </head>
   <body>
     <h1>Sample page to show lumi-usage</h1>
-    <canvas id="outputCanvas" height="32" width="32"> </canvas>
+		<div id="output"  height="32" width="32">
+		</div>   
     <br/>
 		<textArea id="codeInput" rows="20" cols="80">
 
