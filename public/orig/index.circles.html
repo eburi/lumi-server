@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/javascripts/lumi.js"></script>
+    <script src="/javascripts/processing-1.3.6.js"></script>
+
+    <script type="application/processing" data-processing-target="pjs">
+      // All Examples Written by Casey Reas and Ben Fry
+      // unless otherwise stated.
+      float max_distance;
+
+      void setup() {
+        size(32,32); 
+        smooth();
+        noStroke();
+        max_distance = dist(0, 0, width, height);
+      }
+
+      void draw() {
+
+        background(255,0,0);
+
+        for(int i = 0; i <= width; i += 20) {
+
+          for(int j = 0; j <= width; j += 20) {
+
+            float size = dist(mouseX, mouseY, i, j);
+
+            size = size/max_distance * 66;
+
+            ellipse(i, j, size, size);
+          }
+        }
+      }
+    </script>
+
+    <script>
+      setTimeout(function() {
+
+        Processing.instances[0].externals.sketch.onFrameEnd = function() { 
+          var canv = document.getElementById("pjs");
+          var context = canv.getContext("2d");
+          var imgd = context.getImageData(0,0,32,32).data;
+          var pix = [];
+          // Skip Alpha-Channel
+          for(var i=0, l=imgd.length; i<l; i+=4) {
+            pix.push(imgd[i    ]); 
+            pix.push(imgd[i + 1]); 
+            pix.push(imgd[i + 2]); 
+          }
+          lumi.sendFrame(pix);
+        };
+      }, 5000); 
+    </script>
+  </head>
+  <body>
+    <h1>HELLO</h1>
+    <canvas id="pjs"> </canvas>
+  </body>
+</html>

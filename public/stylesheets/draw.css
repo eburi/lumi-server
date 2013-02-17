@@ -1,0 +1,170 @@
+.drawElement{
+	cursor: pointer;
+	width: 32px;
+	height: 32px;
+	margin: 3px;
+	display: inline-block;
+	border: 1px #0099FF solid;
+	background-color: #000000;
+}
+
+.drawElement:hover{
+	border: 1px #FFFFFF solid;
+	box-shadow: 0px 0px 3px #FFFFFF;
+}
+
+.activeTool, .activeColor{
+	border: 1px #FFFFFF solid;
+	box-shadow: 0px 0px 10px #FFFFFF !important;
+}
+
+#paletteMainColors{
+	border-bottom: 1px #AAAAAA solid;
+	display: block;
+	position: relative;
+	left: 0px;
+	top: 0px;
+	right: 0px;
+	height: 43px;
+	margin-left: -3px;
+	margin-right: -3px;
+	padding-right: 3px;
+	margin-bottom: 3px;
+	padding-left: 3px;
+}
+
+#toolbox{
+	height: 80px;
+}
+
+#palette{
+	height: 220px;
+}
+
+#settings{
+	height: 130px;
+}
+
+.settingsElement{
+	cursor: pointer;
+	font-weight: 200;
+	padding-left: 5px;
+	margin-top: 5px;
+}
+
+.settingsInput{
+	position: absolute;
+	left: 135px;
+	width: 50px;
+	border: 1px solid #000000;
+	font-family: 'Open Sans', 'Arial', sans-serif;
+}
+
+.checkbox{
+	position: relative;
+	top: 3px;
+	margin-right: 5px;
+	display: inline-block;
+	cursor: pointer;
+	height: 9px;
+	width: 9px;
+	border: 5px #000000 solid;
+	outline: 1px #0099FF solid;
+	background-color: #000000;
+}
+
+.checkbox.checked{
+	background-color: #0099FF;
+}
+
+.checkbox:hover, .settingsElement:hover .checkbox{
+	outline-color: #FFFFFF;
+}
+
+#drawPad{
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	width: 335px;
+	color: #FFFFFF;
+	padding-left: 5px;
+	
+	background: #444444; /* Old browsers */
+	background: -moz-linear-gradient(top, #444444 0%, #545454 7%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#444444), color-stop(7%,#545454)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #444444 0%,#545454 7%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #444444 0%,#545454 7%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #444444 0%,#545454 7%); /* IE10+ */
+	background: linear-gradient(top, #444444 0%,#545454 7%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', endColorstr='#545454',GradientType=0 ); /* IE6-9 */
+}
+
+#drawArea{
+	position: absolute;
+	top: 30px;
+	left: 30px;
+	right: 30px;
+	border: 1px #000000 solid;
+	min-width: 618px;
+	
+}
+
+#drawCanvas{
+	position: absolute;
+	border: none;
+	margin-top: 7px;
+	margin-left: 7px;
+	height: 320px;
+	width: 320px;
+	background-color: #000000;
+}
+
+#drawDiv{
+	position: absolute;
+	border: none;
+	margin-top: 7px;
+	margin-left: 7px;
+	height: 320px;
+	width: 320px;
+	cursor: crosshair;
+	z-index: 10000;
+	background-image: url('../media/singleMask.png');
+}
+
+#resetButton{
+	cursor: pointer;
+	position: absolute;
+	height: 25px;
+	width: 150px;
+	right: 10px;
+	bottom: 10px;
+	border: 1px #0055AA solid;
+	color: #FFFFFF;
+	font-size: 20px;
+	font-weight: 400;
+	text-align: center;
+	padding-top: 0px;
+	padding-bottom: 6px;
+	
+	
+	background: #0099ff; /* Old browsers */
+	background: -moz-linear-gradient(top, #0099ff 0%, #0052aa 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0099ff), color-stop(100%,#0052aa)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #0099ff 0%,#0052aa 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #0099ff 0%,#0052aa 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #0099ff 0%,#0052aa 100%); /* IE10+ */
+	background: linear-gradient(top, #0099ff 0%,#0052aa 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0099ff', endColorstr='#0052aa',GradientType=0 ); /* IE6-9 */
+}
+
+#resetButton:hover{
+	background: #3fb2ff; /* Old browsers */
+	background: -moz-linear-gradient(top, #3fb2ff 0%, #1b53c4 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#3fb2ff), color-stop(100%,#1b53c4)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top, #3fb2ff 0%,#1b53c4 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top, #3fb2ff 0%,#1b53c4 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top, #3fb2ff 0%,#1b53c4 100%); /* IE10+ */
+	background: linear-gradient(top, #3fb2ff 0%,#1b53c4 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3fb2ff', endColorstr='#1b53c4',GradientType=0 ); /* IE6-9 */
+}

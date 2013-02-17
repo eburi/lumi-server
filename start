@@ -1,5 +1,5 @@
 #!/bin/bash
 
 killall node > /dev/null 2>&1
-node app.js >> express.log 2>&1 &
+NODE_ENV=production node app.js >> express.log 2>&1 &
 

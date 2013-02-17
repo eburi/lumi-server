@@ -4,12 +4,8 @@ var lumi = function(){
 	var HEIGHT = 32;
 	var FULL_FRAME_SIZE = WIDTH*HEIGHT*3;
 	var INDEXED_FRAME_SIZE = WIDTH*HEIGHT;
-	
-	if(typeof io != 'undefined'){
-		var socket = io.connect();
-	} else {
-		return false;
-	}
+
+	var socket = io.connect();
 
 	/*
 	Send a frame to lumi.

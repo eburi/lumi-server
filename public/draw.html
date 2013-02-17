@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Draw - Lumi-Remote</title>
+		<link rel="stylesheet" type="text/css" href="./stylesheets/layout.css" /> 
+		<link rel="stylesheet" type="text/css" href="./stylesheets/draw.css" /> 
+		
+		<script src="./javascripts/jquery-1.7.min.js" type="text/javascript"></script> 
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="./javascripts/lumi.js" type="text/javascript"></script> 
+		<script src="./javascripts/draw.js" type="text/javascript"></script> 
+		<script src="./javascripts/initSimMask.js" type="text/javascript"></script> 
+		
+		
+		<link rel="shortcut icon" href="./favicon.ico" type="image/vnd.microsoft.icon" />
+		<link rel="icon" href="./favicon.ico" type="image/vnd.microsoft.icon" />
+		<meta charset="UTF-8" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js" type="text/javascript"></script>
+		
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+		
+	</head>
+	<body class="default">
+		<div id="menu">
+			<a href="./" id="titleText">Lumi-Remote</a>
+			<div id="menuContainer">
+				<a class="menuItem" href="./">
+					Animate
+				</a>
+				<a class="menuItem current" href="./draw.html">
+					Draw
+				</a>
+				<a class="menuItem" href="./examples.html">
+					Examples
+				</a>
+				<a class="menuItem" href="./learn.html">
+					Learn
+				</a>
+			</div>
+		</div>
+		<div id="simArea">
+			<div id="sim">
+				<div id="simMask"></div>
+				<canvas id="simCanvas" height="32" width="32"></canvas>
+			</div>
+		</div>
+		<div id="editArea">
+			<div id="drawArea">
+				<div id="drawPad">
+					<div class="boxTitle">
+						Draw
+					</div>
+					<div class="boxInner">
+						<div id="drawDiv" onmousedown="return false"></div>
+						<canvas id="drawCanvas" height="32" width="32" ></canvas>
+						<div id="resetButton">Clear</div>
+						<!--Drag any image (allowed formats: png, jpg, gif, bmp, ico) on the drawpad above!-->
+					</div>
+				</div>
+				<div id="palette" class="boxOuter">
+					<div class="boxTitle">
+						Colors
+					</div>
+					<div class="boxInner" id="colorDiv">
+					</div>
+				</div>
+				<div id="toolbox" class="boxOuter">
+					<div class="boxTitle">
+						Toolbox
+					</div>
+					<div class="boxInner" id="toolDiv">
+					</div>
+				</div>
+				<div id="settings" class="boxOuter">
+					<div class="boxTitle">
+						Settings
+					</div>
+					<div class="boxInner" id="settingsDiv">
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

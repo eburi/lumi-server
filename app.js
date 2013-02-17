@@ -34,28 +34,37 @@ io.configure('development', function(){
 });
 
 io.sockets.on('connection', function (socket) {
-//  socket.emit('news', { hello: 'world' });
-//  socket.on('my other event', function (data) {
-//    console.log(data);
-//  });
   socket.on('frame', function(data) {
 
-		var frame = new Buffer(data.data); 
+    var frame = new Buffer(data.data); 
     lumi.sendFrame(frame);
 
-    if (Date.now() - started > 1000) {
-      console.log(Date.now() + " - fps: " + frames);
-      frames = 0;
-      started = Date.now(); 
-    }
-    frames++;
+    ///*DEBUG*/if (Date.now() - started > 1000) {
+    ///*DEBUG*/  console.log(Date.now() + " - fps: " + frames);
+    ///*DEBUG*/  frames = 0;
+    ///*DEBUG*/  started = Date.now(); 
+    ///*DEBUG*/}
+    ///*DEBUG*/frames++;
 
   });
+	
+	socket.on('reset', function(data)  {
+		lumi.reset();
+	});
 
   socket.on('iframe', function(data) {
     var frame = new Buffer(data.data); 
     lumi.sendFrame(frame);
   });
+
+	socket.on('palette', function(data) {
+		lumi.setPalette(data.data);
+	});
+
+	socket.on('createDistPal', function(data) {
+		var pal = lumi.createPalette(data.data);
+		lumi.setPalette(pal);
+	});
 });
 
 

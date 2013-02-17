@@ -29,16 +29,7 @@ function open(portName) {
 function sendFrame(data) {
 	var frame = new Buffer(WIDTH * HEIGHT * 3);
 	if(data.length == WIDTH*HEIGHT*3) {
-		// full frame (R,G,B) => convert G,R,B
-		for(var y=0; y < HEIGHT; y++) {
-			for(var x=0; x < WIDTH; x++) {			
-				var pos = (y * WIDTH + x) * 3;
-				frame = data;
-				//frame[pos    ] = data[pos    ]; // R
-				//frame[pos + 1] = data[pos + 1]; // G
-				//frame[pos + 2] = data[pos + 2]; // B
-			}
-		}
+		frame = data;
 	} else if(data.length == WIDTH * HEIGHT) {
 		// indexed frame
 		if(palette == null) { 
@@ -85,19 +76,56 @@ function sendFrame(data) {
 	}
 }
 
+function reset() {
+	var buffer = new Buffer(WIDTH * HEIGHT*3);	
+	setColor(buffer, 0,0,0);
+  sendFrame(buffer);
+}
+
 function setColor(buf, r,g,b) {
 	for(var y=0; y < HEIGHT; y++) {
 		for(var x=0; x < WIDTH; x++) {
 			var pos = (y*WIDTH + x) * 3;
-			buf[pos + 0] = r; // G
-			buf[pos + 1] = g; // R
+			buf[pos + 0] = r; // R
+			buf[pos + 1] = g; // G
 			buf[pos + 2] = b; // B
 		}
 	}
 }
 
+function setPalette(pal) {
+	if( ! pal instanceof Array)	{
+		console.log("setPalette: argument must be an array of array");
+		return;
+	}
+		
+	for(var i=0; i<pal.length; i++) {
+		if( ! pal[i] instanceof Array || pal[i].length != 3) {
+			console.log("setPalette: argument must be an array of arrays of size 3. [[R1,G1,B1],[R2,G2,B2],[R3,G3,B3]]");
+			return;
+		}
+	}
+	console.log("setPalette: setting a new palette with " + pal.length + " colors");
+	var newPalette = [];
+	for(var i=0; i<256; i++) {
+		var buf = new Buffer(3);
+		if(i<pal.length) {
+			// take the color from the palette
+			buf[0] = pal[i][0];
+			buf[1] = pal[i][1];
+			buf[2] = pal[i][2];
+		} else {
+			// put black
+			buf[0] = buf[1] = buf[2] = 0x00;
+		}
+		newPalette[i] = buf;
+	}
+	palette = newPalette;
+}
+
+/* Creates a palatte by equaly distributing the colors give */
 /* colors is an array of the form [[R,G,B],[R,G,B]] */
-function setPalette(colors) {
+function createPalette(colors) {
 
 	if(colors == null || colors.lenght == 0) 
 		return;
@@ -107,13 +135,13 @@ function setPalette(colors) {
 	var stepSize = 256 / nbrColors;
 	for(var i=0; i<256; i++) {
 		var idx = Math.floor(i / stepSize);
-		var buf = new Buffer(3);
+		var buf = [];
 		buf[0] = colors[idx][0];
 		buf[1] = colors[idx][1];
 		buf[2] = colors[idx][2];
 		newPalette[i] = buf;
 	}
-	palette = newPalette;
+	return newPalette;
 }
 
 //var colors = [[234,140,177],[93,121,135],[252,196,159],[168,212,199]];
@@ -125,7 +153,9 @@ setPalette(colors);
 
 exports.openPort = open;
 exports.sendFrame = sendFrame;
+exports.reset = reset;
 exports.setColor = setColor;
+exports.createPalette = createPalette;
 exports.setPalette = setPalette;
 
 // Test-Code

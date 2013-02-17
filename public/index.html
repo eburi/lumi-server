@@ -1,129 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/javascripts/lumi.js"></script>
-    <script src="/javascripts/processing-1.3.6.js"></script>
-		<script src="/javascripts/jquery-1.7.1.min.js"></script>
-
-    <script>
-			var procInstance = null;
-
-			$(document).ready(function() {
-
-				$('#applyButton').click(function() {
-					var oldCanvas = null;					
-
-					if(procInstance != null) {
-						procInstance.exit();
-						oldCanvas = procInstance.externals.canvas;
-						$(oldCanvas).remove();
-					}
-
-					var target = $("#output").append('<canvas id="outputCanvas" height="32" width="32"></canvas>');
-					var code =$('#codeInput').val().trim();
-	
-					procInstance = new Processing("outputCanvas", code);	
-          procInstance.externals.sketch.onFrameEnd = function() {
-            var imgd = procInstance.toImageData(0,0,procInstance.width,procInstance.height).data;
-            var pix = [];
-            // Skip Alpha-Channel
-            for(var i=0, l=imgd.length; i<l; i+=4) {
-             pix.push(imgd[i    ]); 
-             pix.push(imgd[i + 1]); 
-             pix.push(imgd[i + 2]); 
-            } 
-            lumi.sendFrame(pix);
-          };
-			  });
-    });
-    </script>
-  </head>
-  <body>
-    <h1>Sample page to show lumi-usage</h1>
-		<div id="output"  height="32" width="32">
-		</div>   
-    <br/>
-		<textArea id="codeInput" rows="20" cols="80">
-
-      void setup(){
-        size(32, 32, P3D); 
-        background(0);
-        lights();
-      }
-
-      int r = 0;
-      int g = 0;
-      int b = 255;
-
-      int cycleStep = 0;
-
-      int step = 10;
-
-      void draw(){
-
-      if(cycleStep == 0){
-        r += step;
-        if(r >= 255){
-          r = 255;
-          cycleStep++;
-        }
-      }
-
-      if(cycleStep == 1){
-        b -= step;
-        if(b <= 0){
-          b = 0;
-          cycleStep++;
-        }
-      }
-
-      if(cycleStep == 2){
-        g += step;
-        if(g >= 255){
-          g = 255;
-          cycleStep++;
-        }
-      }
-
-      if(cycleStep == 3){
-        r -= step;
-        if(r <= 0){
-          r = 0;
-          cycleStep++;
-        }
-      }
-
-      if(cycleStep == 4){
-        b += step;
-        if(b >= 255){
-          b = 255;
-          cycleStep++;
-        }
-      }
-
-      if(cycleStep == 5){
-        g -= step;
-        if(g <= 0){
-          g = 0;
-          cycleStep = 0;
-        }
-      }
-
-      lights();
-      background(0);
-      strokeWeight(1);
-      stroke(r, g, b);
-      noFill();
-      pushMatrix();
-      translate(width/2, height/2, 0);
-      rotateX(frameCount * PI/100);
-      rotateY(frameCount * PI/121);
-      box(width/2.1);
-      popMatrix();
-    } 
-    </textArea>
-    <br/>
-    <input type="button" id="applyButton" value="Apply" />
-  </body>
+	<head>
+		<title>Animate - Lumi-Remote</title>
+		<script src="./javascripts/jquery-1.7.min.js" type="text/javascript"></script> 
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="./javascripts/processing-1.3.6.min.js" type="text/javascript"></script> 
+		<script src="./javascripts/lumi.js" type="text/javascript"></script> 
+		
+		<script src="./javascripts/ace-0.2.0/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./javascripts/ace-0.2.0/themes/theme-clouds_midnight.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./javascripts/ace-0.2.0/themes/theme-cobalt.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./javascripts/ace-0.2.0/themes/theme-eclipse.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./javascripts/ace-0.2.0/themes/theme-solarized_dark.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./javascripts/ace-0.2.0/themes/theme-vibrant_ink.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./javascripts/ace-0.2.0/mode-java.js" type="text/javascript" charset="utf-8"></script>
+		
+		<script src="./javascripts/editorTool.js" type="text/javascript"></script>
+		<script src="./javascripts/processingInterface.js" type="text/javascript"></script>
+		<script src="./javascripts/initSimMask.js" type="text/javascript"></script>
+		
+		<link rel="stylesheet" type="text/css" href="./stylesheets/layout.css" /> 
+		<link rel="stylesheet" type="text/css" href="./stylesheets/animate.css" /> 
+		<link rel="shortcut icon" href="./favicon.ico" type="image/vnd.microsoft.icon" />
+		<link rel="icon" href="./favicon.ico" type="image/vnd.microsoft.icon" />
+		<meta charset="UTF-8" />
+		
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600' rel='stylesheet' type='text/css'>
+		
+	</head>
+	<body class="default">
+		<div id="menu">
+		<a href="./" id="titleText">Lumi-Remote</a>
+			<div id="menuContainer">
+				<a class="menuItem current" href="./">
+					Animate
+				</a>
+				<a class="menuItem" href="./draw.html">
+					Draw
+				</a>
+				<a class="menuItem" href="./examples.html">
+					Examples
+				</a>
+				<a class="menuItem" href="./learn.html">
+					Learn
+				</a>
+			</div>
+		</div>
+		<div id="simArea">
+			<div id="applyButton">
+				Start
+			</div>
+			<div id="sim">
+				<div id="simMask"></div>
+			</div>
+		</div>
+		<div id="editArea">
+			<div class="boxOuter codeBox" >
+				<div class="boxTitle">
+					Code
+					<div class="boxTitleSelect" id="selectTheme">
+						<span class="SelectTitle">
+							Theme:
+						</span>
+						<select id="themeSelect">
+							<option value="cobalt" selected="selected">Cobalt</option>
+							<option value="clouds_midnight">Clouds Midnight</option>
+							<option value="eclipse">Eclipse</option>
+							<option value="solarized_dark">Solarized Dark</option>
+							<option value="vibrant_ink">Vibrant Ink</option>
+						</select>
+					</div>
+				</div>
+				<div class="boxInner codeBox">
+					<pre id="codeInput" spellcheck="false">
+					</pre>
+				</div>
+			</div>
+			<div class="boxOuter debugArea" >
+				<div class="boxTitle">
+					Debug
+				</div>
+				<div class="boxInner debugArea">
+			</div>
+		</div>
+	</body>
 </html>
