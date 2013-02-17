@@ -87,7 +87,9 @@ app.configure('production', function(){
   app.use(express.errorHandler()); 
 });
 
-lumi.openPort('/dev/lumi');
+var lumiDevice = process.env.LUMI_DEVICE || "/dev/lumi"
+console.log("Using device: " + lumiDevice);
+lumi.openPort(lumiDevice);
 
 // Routes
 
