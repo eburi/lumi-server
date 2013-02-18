@@ -8,5 +8,6 @@
     , "socket.io": "*"
     , "serialport": "*"
     , "mongoskin": "*"
+    , "phantom" : "*"
   }
 }

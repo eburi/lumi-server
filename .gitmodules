@@ -1,0 +1,3 @@
+[submodule "public/gshow"]
+	path = public/gshow
+	url = git@github.com:eburi/gshow.git
