@@ -140,7 +140,7 @@ setPalette(colors);
 // Frame Mixer
 // simple MAX-Mixer, inplace with fA
 function mixFrame(fA,fB) {
-  for( int i=0; i<fA.length; i++ ) {
+  for( var i=0; i<fA.length; i++ ) {
     fA[i] = Math.max(fA[i], fB[i]);
   }
   return fA;
@@ -153,15 +153,19 @@ var cp_startTime = Date.now();
 
 function updateLumi() {
   var finalFrame = new Buffer(WIDTH * HEIGHT * 3);
+  // clean buffer
+  for( var i=0; i<finalFrame.length; i++) {
+    finalFrame[i]=0;
+  }
 
   // Reduce frames to one - mix all frames into the finalFrame
   for( cId in framesByClientId) {
-    finalFrame = mixFrames(finalFrame, framesByClientId[cId]);
+    finalFrame = mixFrame(finalFrame, framesByClientId[cId]);
   }
 
   /*DEBUG*/if (Date.now() - cp_startTime > 1000) {
-    /*DEBUG*/  console.log(Date.now()," client-count: " + framesByClientId.length);
-    /*DEBUG*/  cp_startTime = Date.now();
+    /*DEBUG*/console.log(new Date().toISOString() + " client-count: " + Object.keys(framesByClientId).length);
+    /*DEBUG*/cp_startTime = Date.now();
   /*DEBUG*/}
 
   lumi_serial.sendFrame(finalFrame);

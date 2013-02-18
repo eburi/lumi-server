@@ -7,6 +7,7 @@ var HEIGHT = 32;
 
 var serialPortName = null;
 var port = null;
+var portReady = false;
 var palette = null;
 
 function open(portName) {
@@ -15,15 +16,24 @@ function open(portName) {
 		port.close();
 		port = null;
 	}
-	try {
-		port = new serialport.SerialPort(portName, {baudrate: 115200,parser: serialport.parsers.readline("\n")});
-		port.on("data", function(data) {
-				///*DEBUG*/console.log("lumi says: " + data);
-				});
-	} catch(ex) {
-		console.log("opening port '" + portName + "' failed: " + ex);
-		port = null;
-	}
+
+	port = new serialport.SerialPort(portName, { baudrate: 115200, parser: serialport.parsers.readline("\n") });
+  port.on("open", function() {
+    console.log("port to lumi opened on: " + serialPortName);
+    portReady = true;
+  });
+
+  port.on("close", function() {
+    portReady = false;
+  });
+
+	port.on("data", function(data) {
+		///*DEBUG*/console.log("lumi says: " + data);
+	});
+  port.on('error', function(err) {
+    ///*DEBUG*/console.log("error from the port:",err);
+    portReady = false;
+  });
 }
 
 function sendFrame(data) {
@@ -32,31 +42,11 @@ function sendFrame(data) {
     return;
 	}
 	var frame = data;
-
-  // actually send that frame...
-	if(port != null) {
-		port.write(frame);
-		// check if port is still valid
-		fs.stat(serialPortName, function(err,stats) {
-			if(err) {
-				console.log("Failed to stat lumi-port "+serialPortName + ": " + err);
-				port = null;
-			/*}else {
-				console.log("stats: " + util.inspect(stats));
-				if(stats.isCharacterDevice()) {
-					console.log("It's not a char-device...");
-				}
-			*/
-			}
-		});
-	} else {
-		open(serialPortName);
-		if(port != null) {
-			port.write(frame);
-		} else {
-			console.log("sendFrame: Can't send frame, cause port " + serialPortName + "  is not open yet and trying to open it failed...");
-		}
-	}
+  if(portReady) {
+    port.write(frame);
+  } else {
+    open(serialPortName);
+  }
 }
 
 function reset() {

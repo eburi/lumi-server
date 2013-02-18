@@ -38,7 +38,7 @@ io.on('connection', function (socket) {
     lumi.frame(data.data, socket.id);
 
     /*DEBUG*/if (Date.now() - fpsc_startTime > 1000) {
-    /*DEBUG*/  console.log(socket.id, Date.now(),"client-fps: " + fpsc_framesCounter);
+    /*DEBUG*/  console.log(new Date().toISOString() + " client-fps: " + fpsc_framesCounter + " from " + socket.id);
     /*DEBUG*/  fpsc_framesCounter = 0;
     /*DEBUG*/  fpsc_startTime = Date.now();
     /*DEBUG*/}
@@ -61,6 +61,10 @@ io.on('connection', function (socket) {
 	socket.on('createDistPal', function(data) {
     lumi.set_dist_palette(data.data, socket.id);
 	});
+
+  socket.on('disconnect', function(){
+    lumi.reset(socket.id);
+  });
 });
 
 
