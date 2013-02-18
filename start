@@ -1,6 +1,0 @@
-#!/bin/bash
-
-killall node > /dev/null 2>&1
-
-#NODE_ENV=production, LUMI_DEVICE='/dev/tty.usbmodem1411' node app.js >> express.log 2>&1 
-NODE_ENV=development, LUMI_DEVICE='/dev/tty.usbmodem1411' node app.js 

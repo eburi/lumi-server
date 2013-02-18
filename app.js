@@ -3,16 +3,18 @@
  * Module dependencies.
  */
 
-var express = require('express');
-var routes = require('./routes');
-var app = module.exports = express.createServer();
-var io = require('socket.io').listen(app);
-var util = require('util');
-
-var lumi = require('./lumi.js');
-
-var fpsc_startTime = Date.now();
-var fpsc_framesCounter = 0;
+var express = require('express')
+  , http = require('http')
+  , path = require('path')
+  , routes = require('./routes')
+  , app = express()
+	, server = http.createServer(app)
+  , io = require('socket.io').listen(server)
+  , util = require('util')
+  , lumi = require('./lib/lumi')
+  , fpsc_startTime = Date.now()
+  , fpsc_framesCounter = 0
+  , lumiDevice = process.env.LUMI_DEVICE || "/dev/lumi";
 
 io.configure('production', function(){
   io.enable('browser client etag');
@@ -21,12 +23,12 @@ io.configure('production', function(){
   io.set('heartbeats', false);
 
   io.set('transports', [
-    'websocket'
-  , 'flashsocket'
-  , 'htmlfile'
-  , 'xhr-polling'
-  , 'jsonp-polling'
-  ]);
+      'websocket'
+    , 'flashsocket'
+    , 'htmlfile'
+    , 'xhr-polling'
+    , 'jsonp-polling'
+    ]);
 });
 
 io.configure('development', function(){
@@ -37,28 +39,28 @@ io.on('connection', function (socket) {
   socket.on('frame', function(data) {
     lumi.frame(data.data, socket.id);
 
-    /*DEBUG*/if (Date.now() - fpsc_startTime > 1000) {
-    /*DEBUG*/  console.log(new Date().toISOString() + " client-fps: " + fpsc_framesCounter + " from " + socket.id);
-    /*DEBUG*/  fpsc_framesCounter = 0;
-    /*DEBUG*/  fpsc_startTime = Date.now();
-    /*DEBUG*/}
-    /*DEBUG*/fpsc_framesCounter++;
+    if (Date.now() - fpsc_startTime > 1000) {
+      console.log(socket.id, Date.now(),"client-fps: " + fpsc_framesCounter);
+      fpsc_framesCounter = 0;
+      fpsc_startTime = Date.now();
+    }
+    fpsc_framesCounter++;
 
   });
 
-	socket.on('reset', function(data)  {
-		lumi.reset(socket.id);
-	});
+  socket.on('reset', function(data)  {
+    lumi.reset(socket.id);
+  });
 
   socket.on('iframe', function(data) {
     lumi.indexed_frame(data.data, socket.id);
   });
 
-	socket.on('palette', function(data) {
-		lumi.set_palette(data.data, socket.id);
-	});
+  socket.on('palette', function(data) {
+    lumi.set_palette(data.data, socket.id);
+  });
 
-	socket.on('createDistPal', function(data) {
+  socket.on('createDistPal', function(data) {
     lumi.set_dist_palette(data.data, socket.id);
 	});
 
@@ -71,33 +73,31 @@ io.on('connection', function (socket) {
 
 // Configuration
 app.configure(function(){
+  app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.set('view options', {layout: false});
+  app.use(express.favicon());
+  app.use(express.logger('dev'));
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+  app.use(express.static(path.join(__dirname, 'public')));
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
-var lumiDevice = process.env.LUMI_DEVICE || "/dev/lumi"
 console.log("Using device: " + lumiDevice);
 lumi.open_port(lumiDevice);
 
 // Routes
 
-//app.get('/', routes.index);
 app.get('/', function(req, res){
   res.redirect('/index.html');
 });
 
-app.listen(3000);
-console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+server.listen(app.get('port'), function(){
+   console.log("Express server listening on port " + app.get('port'));
+});

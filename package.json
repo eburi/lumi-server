@@ -1,11 +1,11 @@
 {
-    "name": "application-name"
+    "name": "lumi-server"
   , "version": "0.0.1"
   , "private": true
   , "dependencies": {
-      "express": "2.5.5"
-    , "jade": ">= 0.0.1"
-    , "socket.io": ">=0.8.7"
+      "express": "*"
+    , "jade": "*"
+    , "socket.io": "*"
     , "serialport": "*"
   }
 }
