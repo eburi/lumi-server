@@ -7,5 +7,6 @@
     , "jade": "*"
     , "socket.io": "*"
     , "serialport": "*"
+    , "phantom" : "*"
   }
 }
