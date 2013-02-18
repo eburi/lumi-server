@@ -12,8 +12,6 @@ var express = require('express')
   , io = require('socket.io').listen(server)
   , util = require('util')
   , lumi = require('./lib/lumi')
-  , fpsc_startTime = Date.now()
-  , fpsc_framesCounter = 0
   , lumiDevice = process.env.LUMI_DEVICE || "/dev/lumi";
 
 io.configure('production', function(){
@@ -36,6 +34,9 @@ io.configure('development', function(){
 });
 
 io.on('connection', function (socket) {
+  var fpsc_startTime = Date.now();
+  var fpsc_framesCounter = 0;
+
   socket.on('frame', function(data) {
     lumi.frame(data.data, socket.id);
 
