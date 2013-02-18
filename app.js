@@ -6,13 +6,13 @@
 var express = require('express')
   , http = require('http')
   , path = require('path')
-  , routes = require('./routes')
+	, sketches = require('./routes/sketches')
+	, conf = require('./lib/config')()
   , app = express()
 	, server = http.createServer(app)
   , io = require('socket.io').listen(server)
   , util = require('util')
-  , lumi = require('./lib/lumi')
-  , lumiDevice = process.env.LUMI_DEVICE || "/dev/lumi";
+  , lumi = require('./lib/lumi');
 
 io.configure('production', function(){
   io.enable('browser client etag');
@@ -90,10 +90,12 @@ app.configure('development', function(){
   app.use(express.errorHandler());
 });
 
-console.log("Using device: " + lumiDevice);
-lumi.open_port(lumiDevice);
+console.log("Using device: " + conf.device);
+lumi.open_port(conf.device);
 
 // Routes
+app.get('/sketches', sketches.list);
+app.post('/sketches', sketches.upsert);
 
 app.get('/', function(req, res){
   res.redirect('/index.html');

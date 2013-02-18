@@ -1,0 +1,4 @@
+{
+    "dbUrl": "mongo://localhost/lumi"
+  , "device": "/dev/lumi"
+}
