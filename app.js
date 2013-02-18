@@ -9,10 +9,10 @@ var app = module.exports = express.createServer();
 var io = require('socket.io').listen(app);
 var util = require('util');
 
-var lumi = require('./lumi_serial.js');
+var lumi = require('./lumi.js');
 
-var started = Date.now();
-var frames = 0;
+var fpsc_startTime = Date.now();
+var fpsc_framesCounter = 0;
 
 io.configure('production', function(){
   io.enable('browser client etag');
@@ -33,39 +33,36 @@ io.configure('development', function(){
   io.set('transports', ['websocket']);
 });
 
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
   socket.on('frame', function(data) {
+    lumi.frame(data.data, socket.id);
 
-    var frame = new Buffer(data.data); 
-    lumi.sendFrame(frame);
-
-    ///*DEBUG*/if (Date.now() - started > 1000) {
-    ///*DEBUG*/  console.log(Date.now() + " - fps: " + frames);
-    ///*DEBUG*/  frames = 0;
-    ///*DEBUG*/  started = Date.now(); 
-    ///*DEBUG*/}
-    ///*DEBUG*/frames++;
+    /*DEBUG*/if (Date.now() - fpsc_startTime > 1000) {
+    /*DEBUG*/  console.log(socket.id, Date.now(),"client-fps: " + fpsc_framesCounter);
+    /*DEBUG*/  fpsc_framesCounter = 0;
+    /*DEBUG*/  fpsc_startTime = Date.now();
+    /*DEBUG*/}
+    /*DEBUG*/fpsc_framesCounter++;
 
   });
-	
+
 	socket.on('reset', function(data)  {
-		lumi.reset();
+		lumi.reset(socket.id);
 	});
 
   socket.on('iframe', function(data) {
-    var frame = new Buffer(data.data); 
-    lumi.sendFrame(frame);
+    lumi.indexed_frame(data.data, socket.id);
   });
 
 	socket.on('palette', function(data) {
-		lumi.setPalette(data.data);
+		lumi.set_palette(data.data, socket.id);
 	});
 
 	socket.on('createDistPal', function(data) {
-		var pal = lumi.createPalette(data.data);
-		lumi.setPalette(pal);
+    lumi.set_dist_palette(data.data, socket.id);
 	});
 });
+
 
 
 // Configuration
@@ -80,16 +77,16 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
-  app.use(express.errorHandler()); 
+  app.use(express.errorHandler());
 });
 
 var lumiDevice = process.env.LUMI_DEVICE || "/dev/lumi"
 console.log("Using device: " + lumiDevice);
-lumi.openPort(lumiDevice);
+lumi.open_port(lumiDevice);
 
 // Routes
 
