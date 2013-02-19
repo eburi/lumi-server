@@ -5,7 +5,7 @@
 
 $(document).ready(function(){
 	
-	var aceInterface = new AceInterface("codeInput");
+	var editor = new AceInterface("codeInput");
 	
 	var editorTool = new EditorTool(); 
 
@@ -18,18 +18,8 @@ $(document).ready(function(){
 		editor.getSession().setMode(new JavaMode());
 		editor.setShowPrintMargin(false);
 	
-		function getContent(){
-			return editor.getSession().getValue();
-		}
-		
-		function setContent(content){
-			editor.getSession().setValue(content);
-		}
+    return editor;
 
-		return {
-			getContent: getContent,
-			setContent: setContent
-		};
 	}
 
 	function EditorTool() {
@@ -40,13 +30,16 @@ $(document).ready(function(){
 		var running = false;
 		var procInstance = null;
     var applyButton = $('#applyButton');
+    var sketchForm = $('#sketchForm');
+    var timer;
+    var saving = false;
 		
 		applyButton.click(function() {
 			running = !running;
 			
 			if(running){
 				applyButton.html('Stop');
-        procInstance = runProcessingCode(aceInterface.getContent());
+        procInstance = runProcessingCode(editor.getValue());
 			} else {
 				applyButton.html('Start');
         reset(procInstance);
@@ -54,24 +47,31 @@ $(document).ready(function(){
 		
 		});
 
-    $('#sketchForm').submit(function (e) {
+    function save () {
 
-      e.preventDefault();
+      sketchForm.find('input[name="sketch[code]"]').val(editor.getValue());
+      if(saving) return;
+      saving = true;
 
-      var $form = $(this);
-      $form.find('input[name="sketch[code]"]').val(aceInterface.getContent());
-
-      $.post('/sketches', $form.serialize(), function (data){
+      $.post('/sketches', sketchForm.serialize(), function (data){
         if(!data.success) {
-          alert('oops: ' + data.error);
+          console.log('oops: ' + data.error);
+        } else {
+          sketchForm.find('.saved').fadeIn(100).delay(500).fadeOut(100);
         }
+        saving = false;
       }, 'json');
-
-      return false;
     
-    });
+    }
 
-    $('#sketchForm .save').click(function (e) { e.preventDefault(); $('#sketchForm').submit();});
+    sketchForm.submit(function (e) { e.preventDefault(); });
+    sketchForm.find('.save').click(function (e) { e.preventDefault(); save();});
+    editor.on('change', function (e) {
+      if (timer) {
+        clearTimeout(timer);
+      }
+      timer = setTimeout(save, 1000);
+    });
 		
 	
 	}
