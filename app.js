@@ -77,7 +77,7 @@ io.on('connection', function (socket) {
 app.configure(function(){
   app.set('port', process.env.PORT || 3000);
   app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
+  app.set('view engine', 'hjs');
   app.set('view options', {layout: false});
   app.use(express.favicon());
   app.use(express.logger('dev'));
@@ -94,13 +94,12 @@ app.configure('development', function(){
 console.log("Using device: " + conf.device);
 lumi.open_port(conf.device);
 
-// Routes
+//Routes
+app.get('/', sketches.get);
 app.get('/sketches', sketches.list);
+app.get('/sketches/:name', sketches.get);
+//upsert
 app.post('/sketches', sketches.upsert);
-
-app.get('/', function(req, res){
-  res.redirect('/index.html');
-});
 
 server.listen(app.get('port'), function(){
    console.log("Express server listening on port " + app.get('port'));
