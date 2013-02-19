@@ -1,5 +1,5 @@
 {
     "dbUrl": "mongo://localhost/lumi"
   , "device": "/dev/tty.usbmodem1411" // default on MAC OSX
-//  , "device": "/dev/lumi"             // default, when a UDEV-Rule exists
+  , "device_linux": "/dev/lumi"             // default, when a UDEV-Rule exists
 }
