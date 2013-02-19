@@ -3,12 +3,11 @@ var db = require('../lib/db')();
 
 exports.upsert = function (req, res) {
 
-  var name   = req.param('name', false)
-    , code = req.param('code');
+  var sketch = req.param('sketch');
 
-  if (!name) { return res.json({success: false, error: 'missing params: `name`'}); }
+  if (!sketch.name) { return res.json({success: false, error: 'missing params: `sketch.name`'}); }
 
-  db.sketches.upsert(name, code, function (err) {
+  db.sketches.upsert(sketch, function (err) {
     if (err) {
       res.json({success: false, error: err.message});
     } else {

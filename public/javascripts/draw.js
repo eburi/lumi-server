@@ -124,9 +124,11 @@ $(document).ready(function(){
 		
 		
 		// Adapt mask pixel width for drawpad and simulator
-		initSimMask(drawDiv, drawDivWidth, drawDivHeight, lumiWidth, lumiHeight);
-		initSimMask(simMask, drawDivWidth, drawDivHeight, lumiWidth, lumiHeight);
-		
+    //init sim & draw mask
+    var backgroundWidth = drawDivWidth / lumiWidth;
+    var backgroundHeight = drawDivHeight / lumiHeight;
+    simMask.css('background-size', backgroundWidth+'px '+backgroundHeight+'px');
+    drawDiv.css('background-size', backgroundWidth+'px '+backgroundHeight+'px');
 		
 		// See below for a detailed documentation of drawPad.
 		drawPad = new DrawPad(

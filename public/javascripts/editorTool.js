@@ -7,18 +7,8 @@ $(document).ready(function(){
 	
 	var aceInterface = new AceInterface("codeInput");
 	
-	var editorTool = new EditorTool(
-		'simCanvas',
-		$('#sim'),
-		$('#simMask'),
-		$('#applyButton'),
-		$('.boxInner.debugArea'),
-		320,
-		320,
-		32,
-		32
-	);
-	
+	var editorTool = new EditorTool(); 
+
 	function AceInterface(inputId){
 
 		var editor = ace.edit(inputId); // Initialises Ace on the input field
@@ -42,42 +32,24 @@ $(document).ready(function(){
 		};
 	}
 
-	function EditorTool(
-		canvasId,		// String: The canvas on which the sketch is rendered
-		simDiv,			// Element in which the canvas is created
-		simMask,		// Mask div
-		applyButton,	// Button to run the code
-		debugArea,		// Debug area div
-		maskWidth,		// Width of the mask div
-		maskHeight,		// Height of the mask div
-		lumiWidth,		// LED wall width
-		lumiHeight		// LED wall height
-	){
-		
-		// Resizes the mask's background-image to represent one pixel on the LED wall
-		initSimMask(simMask, maskWidth, maskHeight, lumiWidth, lumiHeight);
+	function EditorTool() {
 		
 		//var simMouseHandlers = new SimMouseHandlers(simDiv, simMask, maskWidth, maskHeight, lumiWidth, lumiHeight);
 		
 		// Is true while a sketch is being executed.
 		var running = false;
-		
 		var procInstance = null;
+    var applyButton = $('#applyButton');
 		
 		applyButton.click(function() {
 			running = !running;
 			
 			if(running){
 				applyButton.html('Stop');
-				
-				debugArea.empty();
-				var code = aceInterface.getContent();
-
-				procInstance = runProcessingCode(procInstance, code, canvasId, simDiv, simMask, maskWidth, maskHeight, lumiWidth, lumiHeight);
+        procInstance = runProcessingCode(aceInterface.getContent());
 			} else {
 				applyButton.html('Start');
-				
-				reset(procInstance, canvasId, simDiv, lumiWidth, lumiHeight);
+        reset(procInstance);
 			}
 		
 		});
@@ -87,7 +59,7 @@ $(document).ready(function(){
       e.preventDefault();
 
       var $form = $(this);
-      $form.find('input[name="code"]').val(aceInterface.getContent());
+      $form.find('input[name="sketch[code]"]').val(aceInterface.getContent());
 
       $.post('/sketches', $form.serialize(), function (data){
         if(!data.success) {
@@ -98,6 +70,8 @@ $(document).ready(function(){
       return false;
     
     });
+
+    $('#sketchForm .save').click(function (e) { e.preventDefault(); $('#sketchForm').submit();});
 		
 	
 	}

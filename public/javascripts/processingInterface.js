@@ -3,56 +3,70 @@
 *	@author Roland Rytz <roland.rytz@swisscom.com>
 */
 
+var canvasId = 'simCanvas'
+  , simDiv 
+  , canvasParent
+  , simMask
+  , maskWidth = 320
+  , maskHeight = 320
+  , lumiWidth = 32
+  , lumiHeight = 32;
 
+$(document).ready(function () {
+  simDiv = canvasParent = $('#sim');
+  simMask = $('#simMask');
+  initSimMask();
+
+});
+
+initSimMask = function () {
+	var backgroundWidth = maskWidth / lumiWidth;
+	var backgroundHeight = maskHeight / lumiHeight;
+	simMask.css('background-size', backgroundWidth+'px '+backgroundHeight+'px');
+}
 
 /*
 *	Will remove the canvas of the given ID and create a new one.
 *	Calls createProcessingInstance and returns the instance.
 */
 
-refreshCanvas = function(canvasId, canvasParent, width, height){
+refreshCanvas = function(){
 	if($('#'+canvasId)[0]){
 		$('#'+canvasId).remove();
 	}
 
 	var newCanvas = $('<canvas></canvas>');
 	newCanvas.attr('id', canvasId);
-	newCanvas.attr('width', width);
-	newCanvas.attr('height', height);
+	newCanvas.attr('width', lumiWidth);
+	newCanvas.attr('height', lumiHeight);
 	canvasParent.append(newCanvas);
-}
+};
 
-reset = function(procInstance, canvasId, canvasParent, width, height){
+reset = function(procInstance){
 	procInstance.exit();
-	refreshCanvas(canvasId, canvasParent, width, height);
+  refreshCanvas();
 	lumi.reset();
 }
 
-runProcessingCode = function(procInstance, code, canvasId, canvasParent, simMaskElement, maskWidth, maskHeight, lumiWidth, lumiHeight){
-	refreshCanvas(canvasId, canvasParent, lumiWidth, lumiHeight);
-	procInstance = createProcessingInstance(procInstance, canvasId, code, simMaskElement, maskWidth, maskHeight, lumiWidth, lumiHeight);
-	return procInstance;
+runProcessingCode = function(code) {
+  refreshCanvas();
+  return createProcessingInstance(code);
 }
 
 /*
 *	Ends procInstance, starts a new instance for the given canvasId
 *	with the given Processing code and returns it.
 */
-createProcessingInstance = function(procInstance, canvasId, code, simMaskElement, maskWidth, maskHeight, lumiWidth, lumiHeight){
+createProcessingInstance = function(code){
+
+	var simMouseHandlers = new SimMouseHandlers($('#'+canvasId), simMask, maskWidth, maskHeight, lumiWidth, lumiHeight);
 	
-	var simMouseHandlers = new SimMouseHandlers($('#'+canvasId), simMaskElement, maskWidth, maskHeight, lumiWidth, lumiHeight);
-	var newProcInstance;
-	
-	if(procInstance != null) {
-		procInstance.exit();
-	}
-	
-	newProcInstance = new Processing(canvasId, code);
+	var newProcInstance = new Processing(canvasId, code);
 	
 	newProcInstance.externals.sketch.onFrameEnd = function() {
 		//console.log("X,Y: ", newProcInstance.mouseX, newProcInstance.mouseY)
 		
-		var imageData = newProcInstance.toImageData(0, 0, newProcInstance.width, newProcInstance.height).data;
+		var imageData = newProcInstance.toImageData(0, 0, lumiWidth, lumiHeight).data;
 		
 		var pixels = [];
 			for(var i=0, l=imageData.length; i<l; i+=4) {
