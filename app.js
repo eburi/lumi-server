@@ -30,6 +30,7 @@ io.configure('production', function(){
 });
 
 io.configure('development', function(){
+  io.set('log level', 1);
   io.set('transports', ['websocket']);
 });
 
