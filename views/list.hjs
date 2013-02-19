@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Examples - Lumi-Remote</title>
+		<script src="./javascripts/jquery-1.7.min.js" type="text/javascript"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="./javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
+		<script src="./javascripts/lumi.js" type="text/javascript"></script>
+
+		<script src="./javascripts/initSimMask.js" type="text/javascript"></script>
+		<script src="./javascripts/processingInterface.js" type="text/javascript"></script>
+
+		<link rel="stylesheet" type="text/css" href="./stylesheets/layout.css" />
+		<link rel="stylesheet" type="text/css" href="./stylesheets/examples.css" />
+		<meta charset="UTF-8" />
+
+	</head>
+	<body class="default">
+		<div id="menu">
+			<a href="./" id="titleText">Lumi-Remote</a>
+			<div id="menuContainer">
+				<a class="menuItem" href="/">
+					Editor
+				</a>
+				<a class="menuItem" href="/draw.html">
+					Draw
+				</a>
+				<a class="menuItem current" href="/sketches">
+					Sketches
+				</a>
+			</div>
+		</div>
+		<div id="simArea">
+			<div id="sim">
+				<div id="simMask"></div>
+			</div>
+			<div id="stopButton" class="button buttonDisabled">
+				Stop
+			</div>
+		</div>
+		<div id="editArea">
+      {{#sketches}}
+        <div class="exampleOuter" example="cube">
+          <img class="exampleImage" src="./media/exampleThumbs/{{name}}.png" width="64" height="64">
+          <h2 class="exampleTitle">{{name}}</h2>
+          <span class="exampleDesc">A rotating 3D cube which changes colour.</span>
+          <div class="exampleButton tryButton">
+            <img class="loadingImg" style="display: none;" title="" alt="Loading..." src="./media/ajaxLoading.gif">
+            <span class="tryButtonLabel">Try it!</span>				</div><a class="exampleButton editButton" href="/sketches/{{name}}">Open in Editor</a>
+        </div>
+      {{/sketches}}
+    </div>
+  </body>
+</html>

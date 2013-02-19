@@ -4,11 +4,11 @@ var db = require('../lib/db')();
 exports.upsert = function (req, res) {
 
   var name   = req.param('name', false)
-    , sketch = req.param('sketch');
+    , code = req.param('code');
 
-  if (!name) { throw new Error('missing params: `name`');}
+  if (!name) { return res.json({success: false, error: 'missing params: `name`'}); }
 
-  db.sketches.upsert(name, sketch, function (err) {
+  db.sketches.upsert(name, code, function (err) {
     if (err) {
       res.json({success: false, error: err.message});
     } else {
@@ -21,11 +21,23 @@ exports.upsert = function (req, res) {
 exports.list = function(req, res){
 
   db.sketches.all(function (err, sketches) {
-    if (err) {
-      res.json({success: false, error: err.message});
-    } else {
-      res.json({success: true, data: sketches});
-    }
+    if (err) { throw err; }
+    res.render('./list', {sketches: sketches});
   });
+
+};
+
+exports.get = function (req, res) {
+
+  var name = req.param('name', false);
+
+  if (name) {
+    //try to load sketch
+    db.sketches.get(name, function (err, sketch) {
+      res.render('./editor', {sketch: sketch});
+    });
+  } else {
+    res.render('./editor', {sketch: {}});
+  }
 
 };

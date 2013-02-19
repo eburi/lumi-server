@@ -5,26 +5,9 @@
 
 $(document).ready(function(){
 	
-	// List of files which are allowed to be passed as GET parameter.
-	var allowedFiles = [
-		'cube.pde',
-		'star.pde',
-		'alphabet.pde',
-		'time.pde',
-		'drawLine.pde',
-		'mouseCircle.pde',
-		'mousePointer.pde',
-		'pong.pde'
-	]
-	
-	var aceInterface = new AceInterface(
-		"codeInput",
-		'#themeSelect'
-	);
-	
+	var aceInterface = new AceInterface("codeInput");
 	
 	var editorTool = new EditorTool(
-		allowedFiles,
 		'simCanvas',
 		$('#sim'),
 		$('#simMask'),
@@ -36,23 +19,14 @@ $(document).ready(function(){
 		32
 	);
 	
-	function AceInterface(
-		inputId, 		// String: ID of the input field
-		themeSelect		// String: ID of the theme select field
-	){
+	function AceInterface(inputId){
 
 		var editor = ace.edit(inputId); // Initialises Ace on the input field
-		var value = $(themeSelect).children('option:selected').val();
-		editor.setTheme("ace/theme/"+value);
+		editor.setTheme("ace/theme/monokai");
 
 		var JavaMode = require("ace/mode/java").Mode; // Sets the Java highlight mode, as Java is closest to Processing.
 		editor.getSession().setMode(new JavaMode());
 		editor.setShowPrintMargin(false);
-
-		$(themeSelect).change(function () {
-			value = $(themeSelect).children('option:selected').val();
-			editor.setTheme("ace/theme/"+value);
-		});
 	
 		function getContent(){
 			return editor.getSession().getValue();
@@ -69,7 +43,6 @@ $(document).ready(function(){
 	}
 
 	function EditorTool(
-		allowedFiles,
 		canvasId,		// String: The canvas on which the sketch is rendered
 		simDiv,			// Element in which the canvas is created
 		simMask,		// Mask div
@@ -86,22 +59,8 @@ $(document).ready(function(){
 		
 		//var simMouseHandlers = new SimMouseHandlers(simDiv, simMask, maskWidth, maskHeight, lumiWidth, lumiHeight);
 		
-		// GET parameter for the .pde sketch to load
-		var pdeToLoad = getUrlVars()["file"];
-		
 		// Is true while a sketch is being executed.
 		var running = false;
-		
-		// If the file is allowed, it gets loaded via AJAX.
-		if(pdeToLoad != '' || pdeToLoad != undefined){
-			if(fileIsAllowed(pdeToLoad)){
-				$.ajax({
-					async: true,
-					url: './pdeSnippets/'+pdeToLoad,
-					success: aceInterface.setContent,
-				});
-			}
-		}
 		
 		var procInstance = null;
 		
@@ -122,26 +81,24 @@ $(document).ready(function(){
 			}
 		
 		});
+
+    $('#sketchForm').submit(function (e) {
+
+      e.preventDefault();
+
+      var $form = $(this);
+      $form.find('input[name="code"]').val(aceInterface.getContent());
+
+      $.post('/sketches', $form.serialize(), function (data){
+        if(!data.success) {
+          alert('oops: ' + data.error);
+        }
+      }, 'json');
+
+      return false;
+    
+    });
 		
-		function fileIsAllowed(fileName){
-			for(item in allowedFiles){
-				if(allowedFiles[item] == fileName){
-					return true;
-				}
-			}
-			return false;
-		}
-		
-		function getUrlVars() { // Source: http://papermashup.com/read-url-get-variables-withjavascript/
-			var vars = {};
-			var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
-				vars[key] = value;
-			});
-			return vars;
-		}
-			
-		return {
-		};
 	
 	}
 	

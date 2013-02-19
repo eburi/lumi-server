@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Animate - Lumi-Remote</title>
+		<script src="/javascripts/jquery-1.7.min.js" type="text/javascript"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
+		<script src="/javascripts/lumi.js" type="text/javascript"></script>
+
+		<script src="/javascripts/ace-1.0.0/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/javascripts/ace-1.0.0/mode-java.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src="/javascripts/editorTool.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/javascripts/processingInterface.js" type="text/javascript"></script>
+		<script src="/javascripts/initSimMask.js" type="text/javascript"></script>
+
+
+		<link rel="stylesheet" type="text/css" href="/stylesheets/layout.css" />
+		<link rel="stylesheet" type="text/css" href="/stylesheets/animate.css" />
+		<meta charset="UTF-8" />
+
+
+	</head>
+	<body class="default">
+		<div id="menu">
+		<a href="./" id="titleText">Lumi-Remote</a>
+			<div id="menuContainer">
+				<a class="menuItem current" href="#">
+					Editor
+				</a>
+				<a class="menuItem" href="/draw.html">
+					Draw
+				</a>
+				<a class="menuItem" href="/sketches">
+					Sketches
+				</a>
+			</div>
+		</div>
+		<div id="simArea">
+			<div id="applyButton">
+				Start
+			</div>
+			<div id="sim">
+				<div id="simMask"></div>
+			</div>
+		</div>
+		<div id="editArea">
+      <form id="sketchForm">
+        <input type="hidden" name="code"/>
+        <input type="text" name="name" placeholder="Sketch Name" value="{{sketch.name}}"/>
+        <input type="submit" value="Save"/>
+      </form>
+			<div class="codeBox" >
+				<div class="boxInner codeBox">
+					<pre id="codeInput" spellcheck="false">{{sketch.code}}</pre>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -4,7 +4,7 @@
   , "private": true
   , "dependencies": {
       "express": "*"
-    , "jade": "*"
+    , "hjs": "*"
     , "socket.io": "*"
     , "serialport": "*"
     , "mongoskin": "*"
