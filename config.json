@@ -1,4 +1,5 @@
 {
     "dbUrl": "mongo://localhost/lumi"
-  , "device": "/dev/lumi"
+  , "device": "/dev/tty.usbmodem1411" 
+  , "device_linux": "/dev/lumi"
 }
