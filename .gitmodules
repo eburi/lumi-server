@@ -1,3 +1,6 @@
 [submodule "public/gshow"]
 	path = public/gshow
 	url = git@github.com:eburi/gshow.git
+[submodule "lib/phantomjs"]
+	path = lib/phantomjs
+	url = git@github.com:eburi/phantomjs.git
