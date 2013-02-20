@@ -19,14 +19,14 @@ exports.upsert = function (req, res) {
 
 exports.list = function(lumi) {
   return function(req, res) {
-    var rSketches = lumi.getRunningSketches();
+    //var rSketches = lumi.getRunningSketches();
 
     db.sketches.all(function (err, sketches) {
       if (err) { throw err; }
       res.render('./list', {sketches: sketches});
     });
 
-  }
+  };
 };
 
 exports.get = function (req, res) {
@@ -41,5 +41,20 @@ exports.get = function (req, res) {
   } else {
     res.render('./editor', {sketch: {}});
   }
+
+};
+
+exports.delete = function (req, res) {
+
+  var name = req.param('name', false);
+
+  if(!name) { return res.json({success: false, error: 'missing params: `name`'}); }
+
+  db.sketches.delete(name, function (err) {
+    if (err) { throw new Error('could not delete sketch: ' + name + ', error: ' + err);}
+
+    return res.json({success: true});
+  
+  });
 
 };
