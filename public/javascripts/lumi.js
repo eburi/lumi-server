@@ -145,7 +145,7 @@ var lumi = function(){
       e(name,state);
     });
 
-  });)
+  });
 
 	/* export functions */
 	return {
@@ -154,6 +154,8 @@ var lumi = function(){
 		sendIndexedFrame: sendIndexedFrame,
 		setPalette: setPalette,
 		createDistPalette: createDistPalette,
+    listenRemoteSketch: listenRemoteSketch,
+    runRemote: runRemote,
 
 		test: test
 	}

@@ -2,33 +2,10 @@
   <head>
     <title>Lumi-PDE-Player</title>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="./javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
-    <script src="./javascripts/lumi.js" type="text/javascript"></script>
+    <script src="/javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/lumi.js" type="text/javascript"></script>
     <script type="text/processing" id="pde-code">
-
-/* @pjs preload="/gshow/pics/le_goulag_32pxH.png"; */
-
-PImage logo;
-int posX = 32;
-int posY = 2;
-
-void setup() {
-    size(32,32);
-    logo = loadImage("/gshow/pics/le_goulag_32pxH.png");
-    frameRate(20);
-    background(0);
-    println("width " + logo.width + " height: " + logo.height);
-}
-
-void draw() {
-    background(0);
-    image(logo, posX,posY);
-    posX--;
-    if(posX+logo.width < 0) {
-        posX = 33;
-    }
-}
-
+      {{sketch.code}}
     </script>
   </head>
   <body>
