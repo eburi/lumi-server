@@ -16,7 +16,7 @@ html, body{
 body{
 	background-image: url('../media/background.png');
 	background-color: #000000;
-	background-position: right top; 
+	background-position: right top;
 	background-repeat: no-repeat;
 }
 
@@ -24,6 +24,24 @@ canvas{
 	image-rendering: -moz-crisp-edges !important;
 }
 
+
+/** lumi-remote reloaded **/
+button {
+  width: 150px;
+  height: 30px;
+  border-radius: 5px;
+}
+
+button.sketch-control.running {
+  background-image: url("/media/spinner.gif");
+  background-repeat: no-repeat;
+  background-size: 20px;
+}
+
+
+
+
+/** old lumi-remote stuff **/
 .boxOuter{
 	position: relative;
 	display: block;
@@ -57,7 +75,7 @@ canvas{
 	padding-left: 5px;
 	padding-top: 1px;
 	font-weight: 400;
-	
+
 	background: #444444; /* Old browsers */
 background: -moz-linear-gradient(top, #444444 0%, #6d6d6d 100%); /* FF3.6+ */
 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#444444), color-stop(100%,#6d6d6d)); /* Chrome,Safari4+ */
@@ -104,13 +122,13 @@ a#titleText{
 	margin-left: -1px;
 	text-decoration: none;
 
-	
+
 	border: 1px #0055AA solid;
 	color: #FFFFFF;
 	font-weight: 400;
 	text-align: center;
-	
-	
+
+
 	background: #0099ff; /* Old browsers */
 	background: -moz-linear-gradient(top, #0099ff 0%, #0052aa 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0099ff), color-stop(100%,#0052aa)); /* Chrome,Safari4+ */
@@ -163,8 +181,8 @@ a#titleText{
 	font-weight: 400;
 	text-align: center;
 	padding-top: 5px;
-	
-	
+
+
 	background: #0099ff; /* Old browsers */
 	background: -moz-linear-gradient(top, #0099ff 0%, #0052aa 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0099ff), color-stop(100%,#0052aa)); /* Chrome,Safari4+ */
@@ -190,7 +208,7 @@ div.buttonDisabled{
 	cursor: default;
 	color: #333333;
 	border: 2px #898989 solid;
-	
+
 	background: #898989; /* Old browsers */
 	background: -moz-linear-gradient(top, #898989 0%, #cccccc 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#898989), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
@@ -205,7 +223,7 @@ div.buttonDisabled:hover{
 	cursor: default;
 	color: #333333;
 	border: 2px #898989 solid;
-	
+
 	background: #898989; /* Old browsers */
 	background: -moz-linear-gradient(top, #898989 0%, #cccccc 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#898989), color-stop(100%,#cccccc)); /* Chrome,Safari4+ */
@@ -221,7 +239,7 @@ div.buttonDisabled:hover{
 	border: 2px #0055AA solid;
 	color: #FFFFFF;
 	text-align: center;
-	
+
 	background: #0099ff; /* Old browsers */
 	background: -moz-linear-gradient(top, #0099ff 0%, #0052aa 100%); /* FF3.6+ */
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#0099ff), color-stop(100%,#0052aa)); /* Chrome,Safari4+ */
@@ -240,8 +258,8 @@ div.buttonDisabled:hover{
 	height: 320px;
 	background-color: #000000;
 	border: 1px #FFFFFF solid;
-	
-	
+
+
 	/* Disable selection of text or images */
 	-webkit-touch-callout: none;
 	-webkit-user-select: none;
@@ -278,7 +296,7 @@ div.buttonDisabled:hover{
 	border: none;
 	background: transparent;
 }
-	
+
 .boxTitleSelect{
 	position: absolute;
 	top: -1px;

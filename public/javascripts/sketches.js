@@ -6,6 +6,7 @@
 
   var running = false
     , $ = global.jQuery
+    , lumi = global.lumi
     , procInstance;
 
   function init() {
@@ -27,6 +28,7 @@
       ,   sketch_code = sketch_li.data("sketch-code");
 
       alert("Can't run '" + sketch_name + "' remote, yet..");
+      lumi.runRemote(sketch_name);
     });
 
     $('.sketch-control.sketch-open').click(function(e) {
@@ -36,6 +38,14 @@
       ,   sketch_name = sketch_li.data("sketch-name");
 
       window.location = "/sketches/" + sketch_name;
+    });
+
+    lumi.on('start', function(name, state){
+      var sketch_run_remote_button = $("li[data-sketch-name=" + name + "] .sketch-run-remote");
+      switch(state) {
+      case 'running':
+
+      }
     });
   }
 

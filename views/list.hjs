@@ -47,9 +47,22 @@
             {{desc}}
           </div>
           <div class="sketch-control-box">
-            <button class="sketch-control sketch-run-local">Run</button>
-            <button class="sketch-control sketch-run-remote">Run Remote</button>
-            <button class="sketch-control sketch-open">Open in Editor</button>
+            <button class="sketch-control sketch-run-local">
+              <span class="sketch-label">
+                Run
+              </span>
+            </button>
+            <button class="sketch-control sketch-run-remote running">
+              <span class="sketch-label">
+                Run Remote
+              </span>
+              <img class="run-icon" href="/media/ajaxLoading.gif"/>
+            </button>
+            <button class="sketch-control sketch-open">
+              <span class="sketch-label">
+                Open in Editor
+              </span>
+            </button>
           </div>
         </li>
       {{/sketches}}
