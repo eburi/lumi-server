@@ -48,25 +48,16 @@
           </div>
           <div class="sketch-control-box">
             <button class="sketch-control sketch-run-local">
-              <span class="sketch-label">
                 Run
-              </span>
             </button>
             <button class="sketch-control sketch-run-remote running">
-              <span class="sketch-label">
                 Run Remote
-              </span>
-              <img class="run-icon" href="/media/ajaxLoading.gif"/>
             </button>
             <button class="sketch-control sketch-open">
-              <span class="sketch-label">
                 Open in Editor
-              </span>
             </button>
             <button class="sketch-control sketch-del">
-              <span class="sketch-label">
                 Delete
-              </span>
             </button>
           </div>
         </li>

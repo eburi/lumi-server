@@ -39,12 +39,9 @@
       window.location = "/sketches/" + sketch_name;
     });
 
-    lumi.on('start', function(name, state){
-      var sketch_run_remote_button = $("li[data-sketch-name=" + name + "] .sketch-run-remote");
-      switch(state) {
-      case 'running':
-
-      }
+    lumi.listenRemoteSketch(function(name, state){
+      var sketch_run_remote_button = $("li[data-sketch-name='" + name + "'] .sketch-run-remote");
+      switchButtonState(sketch_run_remote_button, state);
     });
 
 		$('.sketch-control.sketch-del').click(function (e) {
@@ -63,6 +60,14 @@
 			});
 
 	}
+
+  function switchButtonState(btn, state) {
+    if(state == 'running') {
+      btn.addClass('running');
+    } else {
+      btn.removeClass('running');
+    }
+  }
 
   function loadSketch(code) {
 
