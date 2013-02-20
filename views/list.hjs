@@ -2,6 +2,9 @@
 <html>
 	<head>
 		<title>Examples - Lumi-Remote</title>
+
+		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+
 		<script src="/javascripts/jquery-1.7.min.js" type="text/javascript"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
@@ -11,32 +14,21 @@
 
 		<script src="/javascripts/sketches.js" type="text/javascript"></script>
 
-		<link rel="stylesheet" type="text/css" href="./stylesheets/layout.css" />
-		<link rel="stylesheet" type="text/css" href="./stylesheets/examples.css" />
 		<meta charset="UTF-8" />
 
 	</head>
 	<body class="default">
-		<div id="menu">
-			<a href="./" id="titleText">Lumi-Remote</a>
-			<div id="menuContainer">
-				<a class="menuItem" href="/">
-					Editor
-				</a>
-				<a class="menuItem" href="/draw.html">
-					Draw
-				</a>
-				<a class="menuItem current" href="/sketches">
-					Sketches
-				</a>
-			</div>
-		</div>
-		<div id="simArea">
+    <nav>
+      <a class="menuItem current" href="/">Editor</a>
+      <a class="menuItem" href="/draw.html">Draw</a>
+      <a class="menuItem" href="/sketches">Sketches</a>
+    </nav>
+		<div id="right">
 			<div id="sim">
 				<div id="simMask"></div>
 			</div>
 		</div>
-		<div id="editArea">
+		<div id="left">
       <ul>
       {{#sketches}}
         <li class="sketch" data-sketch-name="{{name}}" data-sketch-code="{{code}}">
@@ -47,18 +39,10 @@
             {{desc}}
           </div>
           <div class="sketch-control-box">
-            <button class="sketch-control sketch-run-local">
-                Run
-            </button>
-            <button class="sketch-control sketch-run-remote running">
-                Run Remote
-            </button>
-            <button class="sketch-control sketch-open">
-                Open in Editor
-            </button>
-            <button class="sketch-control sketch-del">
-                Delete
-            </button>
+            <button class="sketch-control sketch-run-local">Run</button>
+            <button class="sketch-control sketch-run-remote">Run Remote</button>
+            <button class="sketch-control sketch-open">Open in Editor</button>
+            <button class="sketch-control sketch-del">Delete</button>
           </div>
         </li>
       {{/sketches}}

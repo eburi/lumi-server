@@ -1,0 +1,134 @@
+*{
+	padding: 0px;
+	margin: 0px;
+}
+
+html, body{
+	font-family: 'Open Sans', 'Arial', sans-serif;
+	font-weight: 400;
+  color: white;
+}
+
+body{
+	background-image: url('../media/background.png');
+	background-color: #000000;
+	background-position: right top;
+	background-repeat: no-repeat;
+}
+
+canvas{
+	image-rendering: -moz-crisp-edges !important;
+}
+
+a {
+	color: white;
+}
+
+nav {
+	padding: 10px;
+}
+
+nav a {
+	padding-right: 10px;
+
+}
+
+/** lumi-remote reloaded **/
+button {
+  background-color: white;
+  padding: 5px;
+}
+
+button.sketch-control.running {
+  background: white url("/media/spinner.gif") no-repeat 100% 50%;
+  background-size: 15px;
+  padding-right: 20px;
+}
+
+
+#sim{
+	position: relative;
+	width: 322px;
+	height: 322px;
+	border: 1px #FFFFFF solid;
+}
+
+#sim canvas{
+	width: 100%;
+	height: 100%;
+}
+
+#simMask{
+	position: absolute;
+	background-image: url('../media/singleMask.png');
+	background-size: 10px;
+	left: 0px;
+	right: 0px;
+	top: 0px;
+	bottom: 0px;
+	z-index: 10000;
+}
+
+#left{
+  margin: 10px;
+	position: relative;
+	margin-right: 330px;
+}
+
+#right{
+	float: right;
+}
+
+/* Editor */
+#codeInput {
+	margin-top: 10px;
+	position: absolute;
+  min-height: 600px;
+	width: 100%;
+}
+
+#sketchForm {
+  margin: 10px;
+
+}
+#sketchForm .actions {
+  float: right;
+  margin-right: 10px;
+
+}
+
+#sketchForm .actions button {
+  padding: 5px;
+}
+
+.error{
+	display: block;
+	color: #FF8888;
+	border-bottom: 1px solid #FF5555;
+	padding: 5px;
+}
+
+.errorInner{
+	display: inline;
+	color: #FF0000;
+}
+
+/* Sketches */
+.sketch {
+  margin-bottom: 20px;
+  padding: 10px;
+	border-bottom: 1px solid white;
+}
+
+.sketch div{
+  margin-bottom: 5px;
+}
+
+.sketch button{
+  margin-right: 10px;
+
+}
+
+.sketch .sketch-del{
+  float: right;
+}
