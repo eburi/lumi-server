@@ -17,13 +17,16 @@ exports.upsert = function (req, res) {
 
 };
 
-exports.list = function(req, res){
+exports.list = function(lumi) {
+  return function(req, res) {
+    var rSketches = lumi.getRunningSketches();
 
-  db.sketches.all(function (err, sketches) {
-    if (err) { throw err; }
-    res.render('./list', {sketches: sketches});
-  });
+    db.sketches.all(function (err, sketches) {
+      if (err) { throw err; }
+      res.render('./list', {sketches: sketches});
+    });
 
+  }
 };
 
 exports.get = function (req, res) {

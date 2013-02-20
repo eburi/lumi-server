@@ -96,7 +96,7 @@ lumi.open_port(conf.device);
 
 //Routes
 app.get('/', sketches.get);
-app.get('/sketches', sketches.list);
+app.get('/sketches', sketches.list(lumi));
 app.get('/sketches/:name', sketches.get);
 //upsert
 app.post('/sketches', sketches.upsert);
