@@ -63,6 +63,11 @@
                 Open in Editor
               </span>
             </button>
+            <button class="sketch-control sketch-del">
+              <span class="sketch-label">
+                Delete
+              </span>
+            </button>
           </div>
         </li>
       {{/sketches}}

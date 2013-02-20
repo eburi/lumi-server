@@ -98,6 +98,7 @@ lumi.open_port(conf.device);
 app.get('/', sketches.get);
 app.get('/sketches', sketches.list(lumi));
 app.get('/sketches/:name', sketches.get);
+app.delete('/sketches/:name', sketches.delete);
 //upsert
 app.post('/sketches', sketches.upsert);
 
