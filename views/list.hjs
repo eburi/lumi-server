@@ -50,7 +50,7 @@
             <button class="sketch-control sketch-run-local">
                 Run
             </button>
-            <button class="sketch-control sketch-run-remote running">
+            <button class="sketch-control sketch-run-remote">
                 Run Remote
             </button>
             <button class="sketch-control sketch-open">

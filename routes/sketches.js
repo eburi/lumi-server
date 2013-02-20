@@ -54,7 +54,17 @@ exports.delete = function (req, res) {
     if (err) { throw new Error('could not delete sketch: ' + name + ', error: ' + err);}
 
     return res.json({success: true});
-  
+
   });
 
+};
+
+exports.play = function(req,res) {
+  var name = req.param('name', false);
+  if(name){
+    //try to load sketch
+    db.sketches.get(name, function (err, sketch) {
+      res.render('./player', {sketch: sketch});
+    });
+  }
 };
