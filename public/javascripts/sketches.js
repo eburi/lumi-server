@@ -4,8 +4,7 @@
     throw new Error('missing jquery!!!');
   }
 
-  var running = false
-    , $ = global.jQuery
+  var $ = global.jQuery
     , procInstance;
 
   function init() {
@@ -37,7 +36,23 @@
 
       window.location = "/sketches/" + sketch_name;
     });
+
+		$('.sketch-control.sketch-del').click(function (e) {
+			e.preventDefault();
+			del($(this).parents('li').data('sketch-name'));
+		});
   }
+
+	function del(name) {
+
+		$.ajax({url: '/sketches/' + name, type: 'DELETE'})
+			.fail(function () { alert('could not delete ' + name);})
+			.done(function () {
+				//success, so lets remove list element
+				$('[data-sketch-name="' + name + '"]').remove();
+			});
+	
+	}
 
   function loadSketch(code) {
 

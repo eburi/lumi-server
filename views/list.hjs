@@ -50,6 +50,7 @@
             <button class="sketch-control sketch-run-local">Run</button>
             <button class="sketch-control sketch-run-remote">Run Remote</button>
             <button class="sketch-control sketch-open">Open in Editor</button>
+            <button class="sketch-control sketch-del">Delete</button>
           </div>
         </li>
       {{/sketches}}
