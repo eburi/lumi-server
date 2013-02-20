@@ -14,10 +14,11 @@
 
 
 #codeInput{
-  position: relative;
-  height: 90%;
-  width: 100%;
-	display: block;
+  position: absolute;
+  top: 50px;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .error{
