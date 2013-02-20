@@ -2,6 +2,8 @@
 <html>
 	<head>
 		<title>Animate - Lumi-Remote</title>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+
 		<script src="/javascripts/jquery-1.7.min.js" type="text/javascript"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
@@ -13,37 +15,21 @@
 		<script src="/javascripts/processingInterface.js" type="text/javascript"></script>
 		<script src="/javascripts/editorTool.js" type="text/javascript" charset="utf-8"></script>
 
-
-		<link rel="stylesheet" type="text/css" href="/stylesheets/layout.css" />
-		<link rel="stylesheet" type="text/css" href="/stylesheets/animate.css" />
 		<meta charset="UTF-8" />
-
 
 	</head>
 	<body class="default">
-		<div id="menu">
-		<a href="./" id="titleText">Lumi-Remote</a>
-			<div id="menuContainer">
-				<a class="menuItem current" href="/">
-					Editor
-				</a>
-				<a class="menuItem" href="/draw.html">
-					Draw
-				</a>
-				<a class="menuItem" href="/sketches">
-					Sketches
-				</a>
-			</div>
-		</div>
-		<div id="simArea">
-			<div id="applyButton">
-				Start
-			</div>
+    <nav>
+      <a class="menuItem current" href="/">Editor</a>
+      <a class="menuItem" href="/draw.html">Draw</a>
+      <a class="menuItem" href="/sketches">Sketches</a>
+    </nav>
+		<div id="right">
 			<div id="sim">
 				<div id="simMask"></div>
 			</div>
 		</div>
-		<div id="editArea">
+    <div id="left">
       <form id="sketchForm">
         <input type="hidden" name="sketch[code]"/>
         <label for="sketch.name">Name:
@@ -55,9 +41,10 @@
         <div class="actions">
           <span class="saved" style="display: none;">Saved!</span>
           <button class="save">Save</button>
+          <button id="applyButton">Start</button>
         </div>
       </form>
-			<div id="codeInput" spellcheck="false">{{sketch.code}}</div>
-		</div>
+      <div id="codeInput" spellcheck="false">{{sketch.code}}</div>
+    </div>
 	</body>
 </html>
