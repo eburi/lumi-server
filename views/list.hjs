@@ -17,7 +17,7 @@
 		<meta charset="UTF-8" />
 
 	</head>
-	<body class="default">
+	<body>
     <nav>
       <a class="menuItem current" href="/">Editor</a>
       <a class="menuItem" href="/draw.html">Draw</a>
