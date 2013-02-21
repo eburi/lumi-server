@@ -12,6 +12,16 @@
       padding-bottom: 40px;
       }
 
+      #codeInput {
+      position: relative;
+      width: 100%;
+      top: 40px;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      }
+
+
       #sim{
 	    position: relative;
 	    border: 1px #FFFFFF solid;
@@ -43,12 +53,13 @@
 
 		<script src="/socket.io/socket.io.js"></script>
 		<script src="/javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
+    <script src="/javascripts/ace-1.0.0/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="/javascripts/ace-1.0.0/mode-java.js" type="text/javascript" charset="utf-8"></script>
 
 		<script src="/javascripts/lumi.js" type="text/javascript"></script>
 		<script src="/javascripts/processingInterface.js" type="text/javascript"></script>
 
-		<script src="/javascripts/sketches.js" type="text/javascript"></script>
-
+    <script src="/javascripts/editorTool.js" type="text/javascript" charset="utf-8"></script>
 		<meta charset="UTF-8" />
 
 	</head>
@@ -58,7 +69,7 @@
         <div class="container">
           <a class="brand" href="#">Lumi-Remote</a>
           <ul class="nav">
-            <li>
+            <li class="active">
               <a class="menuItem current" href="/">
                 <i class="icon-pencil icon-white"></i> Editor
               </a>
@@ -68,7 +79,7 @@
                 <i class="icon-tint icon-white"></i> Draw
               </a>
             </li>
-            <li class="active">
+            <li>
               <a class="menuItem" href="/sketches">
                 <i class="icon-picture icon-white"></i> Sketches
               </a>
@@ -86,37 +97,26 @@
     <div class="container">
       <div class="row">
 
-		    <div class="span8">
-          {{#sketches}}
+        <div class="span8">
 
-          <div class="sketch well" data-sketch-name="{{name}}" data-sketch-code="{{code}}">
-            <h3>{{name}}</h2>
+          <form id="sketchForm">
+            <input type="hidden" name="sketch[code]"/>
+            <label for="sketch.name">Name:
+              <input type="text" name="sketch[name]" value="{{sketch.name}}"/>
+            </label>
+            <label for="sketch.desc">Desc:
+              <input type="text" name="sketch[desc]" value="{{sketch.desc}}"/>
+            </label>
+            <div class="actions">
+              <span class="saved" style="display: none;">Saved!</span>
+              <button class="btn save">Save</button>
+              <button class="btn" id="applyButton">Start</button>
+            </div>
+          </form>
+          <div id="codeInput" spellcheck="false">{{sketch.code}}</div>
 
-            <p>
-              {{desc}}
-            </p>
-            <hr/>
-            <div class="btn-group">
-              <button class="btn sketch-control sketch-run-local">
-                <i class="icon-play"></i>
-                <span>
-                  Run
-                </span>
-              </button>
-              <button class="btn sketch-control sketch-run-remote">
-                <i class="icon-play"></i> Run Remote
-              </button>
-              <button class="btn sketch-control sketch-open">
-                <i class="icon-pencil"></i> Open in Editor
-              </button>
-            </div>
-            <div class="pull-right">
-              <button class="btn btn-danger sketch-control sketch-del">
-                <i class="icon-trash icon-white"></i> Delete
-              </button>
-            </div>
-          </div>
-          {{/sketches}}
+
+
         </div>
 
 		    <div class="span4">
@@ -126,6 +126,9 @@
 			      </div>
           </div>
 		    </div>
+
+
+
       </div>
     </div>
   </body>

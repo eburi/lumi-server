@@ -5,8 +5,8 @@
   }
 
   var $ = global.jQuery
-    , lumi = global.lumi
-    , procInstance;
+  , lumi = global.lumi
+  , procInstance;
 
   function init() {
 
@@ -14,17 +14,19 @@
       e.preventDefault();
       var $this =$(this)
       ,   sketch_li = $this.parents('.sketch')
-      ,   sketch_code = sketch_li.data("sketch-code");
+      ,   sketch_code = sketch_li.data("sketch-code")
+      ;
 
-      loadSketch(sketch_code);
+      loadSketch(sketch_code, $this);
     });
 
     $('.sketch-control.sketch-run-remote').click(function(e) {
       e.preventDefault();
       var $this =$(this)
-      ,   sketch_li = $this.parents('.sketch')
-      ,   sketch_name = sketch_li.data("sketch-name")
-      ,   sketch_code = sketch_li.data("sketch-code");
+      ,   sketch_div = $this.parents('.sketch')
+      ,   sketch_name = sketch_div.data("sketch-name")
+      ,   sketch_code = sketch_div.data("sketch-code")
+      ;
 
       lumi.runRemote(sketch_name);
     });
@@ -69,12 +71,22 @@
     }
   }
 
-  function loadSketch(code) {
+  function loadSketch(code, btn) {
+    if (procInstance) {
+      var btns= $('.sketch-control.sketch-run-local');
+      btns.find('span').text("Run");
+      btns.find('i').attr('class','icon-play');
+      reset(procInstance);
+    }
 
-    if (procInstance) { reset(procInstance);}
+    if(btn.text().trim() == "Stop") {
+      return;
+    }
+
+    btn.find("span").text(" Stop");
+    btn.find('i').attr('class','icon-stop');
 
     procInstance = runProcessingCode(code);
-
   }
 
   $(document).ready(init);

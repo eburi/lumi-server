@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 	<head>
-		<title>Examples - Lumi-Remote</title>
+		<title>Lumi-Remote</title>
 
     <!-- <link rel="stylesheet" type="text/css" href="/stylesheets/style.css" /> -->
 		<link rel="stylesheet" type="text/css" href="/stylesheets/bootstrap.min.css" />
@@ -53,6 +53,7 @@
 
 	</head>
 	<body>
+<<<<<<< HEAD
     <div class="navbar navbar-fixed-top navbar-inverse">
       <div class="navbar-inner">
         <div class="container">
@@ -84,49 +85,7 @@
     </div>
 
     <div class="container">
-      <div class="row">
-
-		    <div class="span8">
-          {{#sketches}}
-
-          <div class="sketch well" data-sketch-name="{{name}}" data-sketch-code="{{code}}">
-            <h3>{{name}}</h2>
-
-            <p>
-              {{desc}}
-            </p>
-            <hr/>
-            <div class="btn-group">
-              <button class="btn sketch-control sketch-run-local">
-                <i class="icon-play"></i>
-                <span>
-                  Run
-                </span>
-              </button>
-              <button class="btn sketch-control sketch-run-remote">
-                <i class="icon-play"></i> Run Remote
-              </button>
-              <button class="btn sketch-control sketch-open">
-                <i class="icon-pencil"></i> Open in Editor
-              </button>
-            </div>
-            <div class="pull-right">
-              <button class="btn btn-danger sketch-control sketch-del">
-                <i class="icon-trash icon-white"></i> Delete
-              </button>
-            </div>
-          </div>
-          {{/sketches}}
-        </div>
-
-		    <div class="span4">
-          <div class="img-polaroid">
-			      <div id="sim">
-				      <div id="simMask"></div>
-			      </div>
-          </div>
-		    </div>
-      </div>
+      {{{yield}}}
     </div>
   </body>
 </html>

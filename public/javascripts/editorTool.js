@@ -4,10 +4,9 @@
 */
 
 $(document).ready(function(){
-	
+
 	var editor = new AceInterface("codeInput");
-	
-	var editorTool = new EditorTool(); 
+	var editorTool = new EditorTool();
 
 	function AceInterface(inputId){
 
@@ -17,15 +16,14 @@ $(document).ready(function(){
 		var JavaMode = require("ace/mode/java").Mode; // Sets the Java highlight mode, as Java is closest to Processing.
 		editor.getSession().setMode(new JavaMode());
 		editor.setShowPrintMargin(false);
-	
-    return editor;
 
+    return editor;
 	}
 
 	function EditorTool() {
-		
+
 		//var simMouseHandlers = new SimMouseHandlers(simDiv, simMask, maskWidth, maskHeight, lumiWidth, lumiHeight);
-		
+
 		// Is true while a sketch is being executed.
 		var running = false;
 		var procInstance = null;
@@ -33,10 +31,10 @@ $(document).ready(function(){
     var sketchForm = $('#sketchForm');
     var timer;
     var saving = false;
-		
+
 		applyButton.click(function() {
 			running = !running;
-			
+
 			if(running){
 				applyButton.html('Stop');
         procInstance = runProcessingCode(editor.getValue());
@@ -44,7 +42,7 @@ $(document).ready(function(){
 				applyButton.html('Start');
         reset(procInstance);
 			}
-		
+
 		});
 
     function save () {
@@ -61,7 +59,7 @@ $(document).ready(function(){
         }
         saving = false;
       }, 'json');
-    
+
     }
 
     sketchForm.submit(function (e) { e.preventDefault(); });
@@ -72,13 +70,25 @@ $(document).ready(function(){
       }
       timer = setTimeout(save, 1000);
     });
-		
-	
+
+
 	}
-	
+
+  function resizeEditor() {
+
+    editor.resize();
+  }
+
 	// Prints any errors into the debug area.
 	window.onerror = function(msg, url, line){
 		$('.boxInner.debugArea').append('<span class="error">Error: <span class="errorInner">'+msg+'</span> in <span class="errorInner">'+url+'</span> on line <span class="errorInner">'+line+'</span></span>');
 	}
-	
+
+  $(document).ready(function() {
+    resizeEditor();
+  });
+
+  $(window).resize(function(){
+    resizeEditor();
+  });
 });

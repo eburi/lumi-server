@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+	<head>
+		<title>Animate - Lumi-Remote</title>
+		<link rel="stylesheet" type="text/css" href="/stylesheets/style.css" />
+
+		<script src="/javascripts/jquery-1.7.min.js" type="text/javascript"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="/javascripts/processing-1.4.1.min.js" type="text/javascript"></script>
+		<script src="/javascripts/lumi.js" type="text/javascript"></script>
+
+		<script src="/javascripts/ace-1.0.0/ace.js" type="text/javascript" charset="utf-8"></script>
+		<script src="/javascripts/ace-1.0.0/mode-java.js" type="text/javascript" charset="utf-8"></script>
+
+		<script src="/javascripts/processingInterface.js" type="text/javascript"></script>
+		<script src="/javascripts/editorTool.js" type="text/javascript" charset="utf-8"></script>
+
+		<meta charset="UTF-8" />
+
+	</head>
+	<body class="default">
+    <nav>
+      <a class="menuItem current" href="/">Editor</a>
+      <a class="menuItem" href="/draw.html">Draw</a>
+      <a class="menuItem" href="/sketches">Sketches</a>
+      <a class="menuItem" href="/remotes">Remotes</a>
+    </nav>
+		<div id="right">
+			<div id="sim">
+				<div id="simMask"></div>
+			</div>
+		</div>
+    <div id="left">
+      <form id="sketchForm">
+        <input type="hidden" name="sketch[code]"/>
+        <label for="sketch.name">Name:
+          <input type="text" name="sketch[name]" value="{{sketch.name}}"/>
+        </label>
+        <label for="sketch.desc">Desc:
+          <input type="text" name="sketch[desc]" value="{{sketch.desc}}"/>
+        </label>
+        <div class="actions">
+          <span class="saved" style="display: none;">Saved!</span>
+          <button class="save">Save</button>
+          <button id="applyButton">Start</button>
+        </div>
+      </form>
+      <div id="codeInput" spellcheck="false">{{sketch.code}}</div>
+    </div>
+	</body>
+</html>
