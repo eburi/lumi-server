@@ -13,7 +13,7 @@
     $('.sketch-control.sketch-run-local').click(function(e) {
       e.preventDefault();
       var $this =$(this)
-      ,   sketch_li = $this.parents('li')
+      ,   sketch_li = $this.parents('.sketch')
       ,   sketch_code = sketch_li.data("sketch-code");
 
       loadSketch(sketch_code);
@@ -22,7 +22,7 @@
     $('.sketch-control.sketch-run-remote').click(function(e) {
       e.preventDefault();
       var $this =$(this)
-      ,   sketch_li = $this.parents('li')
+      ,   sketch_li = $this.parents('.sketch')
       ,   sketch_name = sketch_li.data("sketch-name")
       ,   sketch_code = sketch_li.data("sketch-code");
 
@@ -32,7 +32,7 @@
     $('.sketch-control.sketch-open').click(function(e) {
       e.preventDefault();
       var $this =$(this)
-      ,   sketch_li = $this.parents('li')
+      ,   sketch_li = $this.parents('.sketch')
       ,   sketch_name = sketch_li.data("sketch-name");
 
       window.location = "/sketches/" + sketch_name;
