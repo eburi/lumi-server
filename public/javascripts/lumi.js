@@ -127,22 +127,38 @@ var lumi = function(){
 		}
 	};
 
-  /* remote run a sketch */
+  /* run a remote-sketch */
   var runRemote = function(name){
     socket.emit('runSketch', { name: name });
   };
 
+  /* stop remote-sketches */
+  var stopRemoteById = function(id) {
+    socket.emit('stopSketch', { id: id });
+  };
+
+  var stopRemoteByName = function(name) {
+    socket.emit('stopSketchNamed', { name: name });
+  };
+
+  var stopRemoteAll = function() {
+    socket.emit('stopAllSketch');
+  };
+
   /* remote-state-listener */
   var listenRemoteSketch = function(cb) {
-    stateListeners.append(cb);
+    stateListeners.push(cb);
   };
 
   socket.on('rskstate', function (data) {
-    var name = data.name
-    ,   state = data.state;
-    console.log("received state update ",data);
+    var name  = data.name
+    ,   state = data.state
+    ,   id    = data.id
+    ;
+
+    console.log("received state-update ",data);
     stateListeners.forEach(function(e){
-      e(name,state);
+      e(name,state,id);
     });
 
   });
@@ -156,6 +172,9 @@ var lumi = function(){
 		createDistPalette: createDistPalette,
     listenRemoteSketch: listenRemoteSketch,
     runRemote: runRemote,
+    stopRemoteById: stopRemoteById,
+    stopRemoteByName: stopRemoteByName,
+    stopRemoteAll: stopRemoteAll,
 
 		test: test
 	}

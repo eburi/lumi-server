@@ -26,7 +26,6 @@
       ,   sketch_name = sketch_li.data("sketch-name")
       ,   sketch_code = sketch_li.data("sketch-code");
 
-      alert("Can't run '" + sketch_name + "' remote, yet..");
       lumi.runRemote(sketch_name);
     });
 
@@ -39,7 +38,8 @@
       window.location = "/sketches/" + sketch_name;
     });
 
-    lumi.listenRemoteSketch(function(name, state){
+    lumi.listenRemoteSketch(function(name, state, id){
+      console.log("New State: " )
       var sketch_run_remote_button = $("li[data-sketch-name='" + name + "'] .sketch-run-remote");
       switchButtonState(sketch_run_remote_button, state);
     });

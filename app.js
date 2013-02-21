@@ -12,7 +12,9 @@ var express = require('express')
 	, server = http.createServer(app)
   , io = require('socket.io').listen(server)
   , util = require('util')
-  , lumi = require('./lib/lumi');
+  , lumi = require('./lib/lumi')
+  , sketchRunner = require('./lib/sketch_runner')
+  ;
 
 io.configure('production', function(){
   io.enable('browser client etag');
@@ -69,8 +71,31 @@ io.on('connection', function (socket) {
   socket.on('disconnect', function(){
     lumi.reset(socket.id);
   });
+
+  socket.on('runSketch', function(data) {
+    var name = data.name;
+    sketchRunner.runSketch(name, "http://localhost:"+(process.env.PORT || 3000)+"/play/"+name);
+  });
+
+  socket.on('stopSketch', function(data) {
+    var id = data.id;
+    sketchRunner.stopSketchById(id);
+  });
+
+  socket.on('stopSketchNamed', function(data) {
+    var name = data.name;
+    sketchRunner.stopSketchById(name);
+  });
+
+  socket.on('stopAllSketch',function(){
+    sketchRunner.stopAll();
+  });
 });
 
+sketchRunner.addListener(function(name,state, id){
+  console.log("SKETCH_RUNNER: id:" + id + " name:" + name + " id:"+id);
+  io.sockets.emit('rskstate', { name: name, state: state, id: id });
+});
 
 
 // Configuration
@@ -99,6 +124,7 @@ app.get('/', sketches.get);
 app.get('/sketches', sketches.list(lumi));
 app.get('/sketches/:name', sketches.get);
 app.delete('/sketches/:name', sketches.delete);
+app.get('/play/:name',sketches.play);
 //upsert
 app.post('/sketches', sketches.upsert);
 
