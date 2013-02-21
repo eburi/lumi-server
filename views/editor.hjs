@@ -23,6 +23,7 @@
       <a class="menuItem current" href="/">Editor</a>
       <a class="menuItem" href="/draw.html">Draw</a>
       <a class="menuItem" href="/sketches">Sketches</a>
+      <a class="menuItem" href="/remotes">Remotes</a>
     </nav>
 		<div id="right">
 			<div id="sim">

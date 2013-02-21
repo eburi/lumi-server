@@ -93,7 +93,7 @@ io.on('connection', function (socket) {
 });
 
 sketchRunner.addListener(function(name,state, id){
-  console.log("SKETCH_RUNNER: id:" + id + " name:" + name + " id:"+id);
+  console.log("SKETCH_RUNNER: id:" + id + " name:" + name + " state:"+state);
   io.sockets.emit('rskstate', { name: name, state: state, id: id });
 });
 
@@ -121,9 +121,10 @@ lumi.open_port(conf.device);
 
 //Routes
 app.get('/', sketches.get);
-app.get('/sketches', sketches.list(lumi));
+app.get('/sketches', sketches.list(sketchRunner));
 app.get('/sketches/:name', sketches.get);
 app.delete('/sketches/:name', sketches.delete);
+app.get('/remotes', sketches.remotes(sketchRunner));
 app.get('/play/:name',sketches.play);
 //upsert
 app.post('/sketches', sketches.upsert);

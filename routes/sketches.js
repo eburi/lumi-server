@@ -17,16 +17,14 @@ exports.upsert = function (req, res) {
 
 };
 
-exports.list = function(lumi) {
+exports.list = function(sketchRunner) {
   return function(req, res) {
-    //var rSketches = lumi.getRunningSketches();
-
     db.sketches.all(function (err, sketches) {
       if (err) { throw err; }
       res.render('./list', {sketches: sketches});
     });
-
   };
+
 };
 
 exports.get = function (req, res) {
@@ -67,4 +65,16 @@ exports.play = function(req,res) {
       res.render('./player', {sketch: sketch});
     });
   }
+};
+
+exports.remotes = function(sketchRunner) {
+  return function(req, res) {
+    var running = sketchRunner.getAllSketches();
+
+    db.sketches.all(function (err, sketches) {
+      if (err) { throw err; }
+      res.render('./remotes', {running: running});
+    });
+
+  };
 };

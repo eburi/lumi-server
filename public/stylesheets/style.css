@@ -132,3 +132,19 @@ button.sketch-control.running {
 .sketch .sketch-del{
   float: right;
 }
+
+.sketch .sketch-stop {
+  float: right;
+}
+
+.sketch h2 {
+  display: inline;
+}
+
+.remotes-control-box {
+  display:inline;
+}
+
+.sketch.controls {
+  text-align: right;
+}
