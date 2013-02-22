@@ -15,13 +15,13 @@
       ,   sketch_id = $this.data('id');
 
       lumi.stopRemoteById(sketch_id);
-//      window.location.reload();
+      window.location.reload();
     });
 
     $('.sketch-control.sketch-stop-all').click(function(e) {
       e.preventDefault();
       lumi.stopRemoteAll();
-//      window.location.reload();
+      window.location.reload();
     });
   }
 

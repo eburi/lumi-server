@@ -87,36 +87,35 @@
       <div class="row">
 
 		    <div class="span8">
-          {{#sketches}}
-
-          <div class="sketch well" data-sketch-name="{{name}}" data-sketch-code="{{code}}">
-            <h3>{{name}}</h2>
-
-            <p>
-              {{desc}}
-            </p>
-            <hr/>
-            <div class="btn-group">
-              <button class="btn sketch-control sketch-run-local">
-                <i class="icon-play"></i>
-                <span>
-                  Run
-                </span>
-              </button>
-              <button class="btn sketch-control sketch-run-remote">
-                <i class="icon-play"></i> Run Remote
-              </button>
-              <button class="btn sketch-control sketch-open">
-                <i class="icon-pencil"></i> Open in Editor
-              </button>
-            </div>
-            <div class="pull-right">
-              <button class="btn btn-danger sketch-control sketch-del">
-                <i class="icon-trash icon-white"></i> Delete
-              </button>
-            </div>
-          </div>
-          {{/sketches}}
+          <h3>All Sketches</h3>
+          <table class="table table-hover">
+            {{#sketches}}
+            <tr>
+              <td>
+                {{name}}
+              </td>
+              <td>
+                {{desc}}
+              </td>
+              <td>
+                <div class="btngroup sketch" data-sketch-name="{{name}}" data-sketch-code="{{code}}">
+                  <button class="btn btn-primary sketch-control sketch-run-local" data-toggle="button">
+                    <i class="icon-play icon-white"></i>
+                  </button>
+                  <button class="btn sketch-control sketch-run-remote">
+                    <i class="icon-play"></i>
+                  </button>
+                  <button class="btn sketch-control sketch-open">
+                    <i class="icon-pencil"></i>
+                  </button>
+                  <button class="btn btn-danger sketch-control sketch-del">
+                    <i class="icon-trash icon-white"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+            {{/sketches}}
+          </table>
         </div>
 
 		    <div class="span4">
@@ -126,6 +125,20 @@
 			      </div>
           </div>
 		    </div>
+
+        <div id="delConfirmDialog" class="modal hide fade">
+          <div class="modal-header">
+            <h3>Are you really sure?</h3>
+          </div>
+          <div class="modal-header">
+            Can not be undone!
+          </div>
+          <div class="modal-footer">
+           <a href="javascript:$('#delConfirmDialog').modal('hide')" class="btn btn-primary">Abort</a>
+            <a id="delConfirm" href="#" class="btn btn-danger">Delete</a>
+          </div>
+        </div>
+
       </div>
     </div>
   </body>
