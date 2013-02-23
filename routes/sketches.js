@@ -20,7 +20,10 @@ exports.upsert = function (req, res) {
 exports.list = function(sketchRunner) {
   return function(req, res) {
     db.sketches.all(function (err, sketches) {
-      if (err) { throw err; }
+      if (err) {
+        // this crashed the node process...
+        throw err;
+      }
       res.render('./list', {sketches: sketches});
     });
   };
@@ -70,11 +73,6 @@ exports.play = function(req,res) {
 exports.remotes = function(sketchRunner) {
   return function(req, res) {
     var running = sketchRunner.getAllSketches();
-
-    db.sketches.all(function (err, sketches) {
-      if (err) { throw err; }
-      res.render('./remotes', {running: running});
-    });
-
+    res.render('./remotes', {running: running});
   };
 };
