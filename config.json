@@ -1,5 +1,7 @@
 {
     "dbUrl": "mongodb://lumi:lumi4all@linus.mongohq.com:10034/lumi-dev"
-  , "device": "/dev/tty.usbmodem1411" 
+  , "device": "/dev/ttyACM3" 
+  , "device_linux": "/dev/ttyACM3" 
+  , "device_osx": "/dev/tty.usbmodem1411" 
   , "device_linux": "/dev/lumi"
 }
