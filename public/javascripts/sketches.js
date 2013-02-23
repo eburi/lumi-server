@@ -91,10 +91,12 @@
 	}
 
   function playSketch(code) {
+    stopSketch();
     procInstance = runProcessingCode(code);
   }
 
   function stopSketch() {
+    console.log("stopping running sketch");
     if (procInstance) {
       reset(procInstance);
     }
