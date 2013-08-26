@@ -1,0 +1,38 @@
+= libbeat
+
+This is libbeat, a lightweight beat detection library for Qt. It currently supports ALSA[http://www.alsa-project.org/main/index.php/Main_Page] and PulseAudio[http://www.pulseaudio.org/]. It uses fftw[http://www.fftw.org/] to process the samples.
+
+Only tested on Linux.
+
+The software is still in development and pre-alpha.
+
+== Sample Application
+
+The library comes with a sample Qt Application, simply run
+
+  qmake
+  make
+
+in the root directory to build it.
+
+Make sure you have fftw3, alsa (or PulseAudio) and Qt4 installed!
+
+=== Testing
+
+When running the application, make sure to declare the right LIBRARY_PATH.
+This should work from within the SoundAnalyser directory:
+
+
+  LD_LIBRARY_PATH=../src ./SoundAnalyser 
+
+Screenshot[https://github.com/mguentner/libbeat/raw/master/SoundAnalyser/soundanalyser.png]
+
+* The blue circle indicates a snare drum beat.
+* The yellow circle indicates a drum bass beat.
+* The red areas indicate a beat in the corresponding subband.
+* The magenta rectangles represent the current detection threshold for the corresponding subband.
+
+
+= License
+
+Copyright @2011 Maximilian Güntner <maximilian.guentner@gmail.com> under the GPL v3
