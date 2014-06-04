@@ -14,6 +14,12 @@ var express = require('express')
     , util = require('util')
     , lumi = require('./lib/lumi')
     , sketchRunner = require('./lib/sketch_runner')
+    , bodyParser = require('body-parser')
+    , favicon = require('serve-favicon')
+    , morgan  = require('morgan')
+    , methodOverride = require('method-override')
+    , serveStatic = require('serve-static')
+    , errorhandler = require('errorhandler')
     ;
 
 io.configure('production', function(){
@@ -99,22 +105,16 @@ sketchRunner.addListener(function(name,state, id){
 
 
 // Configuration
-app.configure(function(){
-    app.set('port', process.env.PORT || 3000);
-    app.set('views', __dirname + '/views');
-    app.set('view engine', 'hjs');
-    app.set('view options', {layout: false});
-    app.use(express.favicon());
-    app.use(express.logger('dev'));
-    app.use(express.bodyParser());
-    app.use(express.methodOverride());
-    app.use(app.router);
-    app.use(express.static(path.join(__dirname, 'public')));
-});
-
-app.configure('development', function(){
-    app.use(express.errorHandler());
-});
+app.set('port', process.env.PORT || 3000);
+app.set('views', __dirname + '/views');
+app.set('view engine', 'hjs');
+app.set('view options', {layout: false});
+app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(morgan({ format: 'dev', immediate: true }));
+app.use(bodyParser());
+app.use(methodOverride('X-HTTP-Method-Override'));
+app.use(serveStatic('public/'));
+app.use(errorhandler());
 
 console.log("Using device: " + conf.device);
 lumi.open_port(conf.device);
