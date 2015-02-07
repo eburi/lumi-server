@@ -1,26 +1,25 @@
+'use strict';
 
 /**
  * Module dependencies.
  */
 
 var express = require('express')
-    , http = require('http')
-    , path = require('path')
-    , sketches = require('./routes/sketches')
-    , conf = require('./lib/config')()
-    , app = express()
-    , server = http.createServer(app)
-    , io = require('socket.io').listen(server)
-    , util = require('util')
-    , lumi = require('./lib/lumi')
-    , sketchRunner = require('./lib/sketch_runner')
-    , bodyParser = require('body-parser')
-    , favicon = require('serve-favicon')
-    , morgan  = require('morgan')
-    , methodOverride = require('method-override')
-    , serveStatic = require('serve-static')
-    , errorhandler = require('errorhandler')
-    ;
+  , http = require('http')
+  , sketches = require('./routes/sketches')
+  , conf = require('./lib/config')()
+  , app = express()
+  , server = http.createServer(app)
+  , io = require('socket.io').listen(server)
+  , lumi = require('./lib/lumi')
+  , sketchRunner = require('./lib/sketch_runner')
+  , bodyParser = require('body-parser')
+  , favicon = require('serve-favicon')
+  , morgan  = require('morgan')
+  , methodOverride = require('method-override')
+  , serveStatic = require('serve-static')
+  , errorhandler = require('errorhandler')
+  ;
 
 io.configure('production', function(){
     io.enable('browser client etag');
@@ -43,35 +42,35 @@ io.configure('development', function(){
 });
 
 io.on('connection', function (socket) {
-    var fpsc_startTime = Date.now();
-    var fpsc_framesCounter = 0;
+    var fpscStartTime = Date.now();
+    var fpscFramesCounter = 0;
 
     socket.on('frame', function(data) {
         lumi.frame(data.data, socket.id);
 
-        if (Date.now() - fpsc_startTime > 1000) {
-            console.log(socket.id, Date.now(),"client-fps: " + fpsc_framesCounter);
-            fpsc_framesCounter = 0;
-            fpsc_startTime = Date.now();
+        if (Date.now() - fpscStartTime > 1000) {
+            console.log(socket.id, Date.now(),'client-fps: ' + fpscFramesCounter);
+            fpscFramesCounter = 0;
+            fpscStartTime = Date.now();
         }
-        fpsc_framesCounter++;
+        fpscFramesCounter++;
 
     });
 
-    socket.on('reset', function(data)  {
+    socket.on('reset', function()  {
         lumi.reset(socket.id);
     });
 
     socket.on('iframe', function(data) {
-        lumi.indexed_frame(data.data, socket.id);
+        lumi.indexedFrame(data.data, socket.id);
     });
 
     socket.on('palette', function(data) {
-        lumi.set_palette(data.data, socket.id);
+        lumi.setPalette(data.data, socket.id);
     });
 
     socket.on('createDistPal', function(data) {
-        lumi.set_dist_palette(data.data, socket.id);
+        lumi.setDistPalette(data.data, socket.id);
     });
 
     socket.on('disconnect', function(){
@@ -117,7 +116,7 @@ app.use(serveStatic('public/'));
 app.use(errorhandler());
 
 console.log("Using device: " + conf.device);
-lumi.open_port(conf.device);
+lumi.openPort(conf.device);
 
 //Routes
 app.get('/', sketches.get);

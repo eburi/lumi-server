@@ -14,7 +14,6 @@ exports.upsert = function (req, res) {
       res.json({success: true});
     }
   });
-
 };
 
 exports.list = function(sketchRunner) {
