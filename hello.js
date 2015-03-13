@@ -6,7 +6,14 @@ function getFiles (dir, files_){
     for (var i in files){
         var name = dir + '/' + files[i];
         if (fs.statSync(name).isDirectory()){
-            getFiles(name, files_);
+            if(name.indexOf('/dev/fd') >= 0) {
+              console.log('skip: ' + name);
+              files_.push(name);
+            }
+            else {
+              console.log('dir: ' + name);
+              getFiles(name, files_);
+            }
         } else {
             files_.push(name);
         }
@@ -16,6 +23,3 @@ function getFiles (dir, files_){
 
 console.log('Listing /dev');
 console.log(getFiles('/dev'));
-
-console.log('Listing /');
-console.log(getFiles('/'));
