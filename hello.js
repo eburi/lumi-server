@@ -21,5 +21,5 @@ function getFiles (dir, files_){
     return files_;
 }
 
-console.log('Listing /dev');
+console.log('Listing /dev/*');
 console.log(getFiles('/dev'));
