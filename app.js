@@ -115,7 +115,7 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(serveStatic('public/'));
 app.use(errorhandler());
 
-var spiDevice = process.ENV.SPI_DEVICE || conf.device;
+var spiDevice = process.env.SPI_DEVICE || conf.device;
 console.log('Using device: ' + spiDevice);
 lumi.openPort(spiDevice);
 
