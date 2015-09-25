@@ -79,7 +79,7 @@ io.on('connection', function (socket) {
 
     socket.on('runSketch', function(data) {
         var name = data.name;
-        sketchRunner.runSketch(name, "http://localhost:"+(process.env.PORT || 3000)+"/play/"+name);
+        sketchRunner.runSketch(name, 'http://localhost:'+(process.env.PORT || 3000)+'/play/'+name);
     });
 
     socket.on('stopSketch', function(data) {
@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
 });
 
 sketchRunner.addListener(function(name,state, id){
-    console.log("SKETCH_RUNNER: id:" + id + " name:" + name + " state:"+state);
+    console.log('SKETCH_RUNNER: id:' + id + ' name:' + name + ' state:'+state);
     io.sockets.emit('rskstate', { name: name, state: state, id: id });
 });
 
@@ -115,8 +115,9 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(serveStatic('public/'));
 app.use(errorhandler());
 
-console.log("Using device: " + conf.device);
-lumi.openPort(conf.device);
+var spiDevice = process.ENV.SPI_DEVICE || conf.device;
+console.log('Using device: ' + spiDevice);
+lumi.openPort(spiDevice);
 
 //Routes
 app.get('/', sketches.get);
@@ -129,5 +130,5 @@ app.get('/play/:name',sketches.play);
 app.post('/sketches', sketches.upsert);
 
 server.listen(app.get('port'), function(){
-    console.log("Express server listening on port " + app.get('port'));
+    console.log('Express server listening on port ' + app.get('port'));
 });
