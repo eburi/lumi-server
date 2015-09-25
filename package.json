@@ -1,5 +1,6 @@
 {
   "name": "lumi-server",
+  "author": "Erich Buri <erich.buri@gmail.com>",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -17,6 +18,7 @@
     "serve-static": "^1.2.3",
     "socket.io": "^0.9.13"
   },
+  "description": "",
   "main":"app.js",
   "scripts": {
     "start": "node app.js"

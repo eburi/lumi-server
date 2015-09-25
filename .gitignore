@@ -1,6 +1,11 @@
 node_modules/
-express.log
 lumi_log.txt
 .nodexenv
 .DS_Store
 ._*
+
+# Temporary files.
+.#*
+
+# Log files.
+*.log
