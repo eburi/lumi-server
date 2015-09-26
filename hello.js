@@ -1,25 +1,31 @@
-var fs = require('fs');
+'use strict';
 
-function getFiles (dir, files_){
-    files_ = files_ || [];
-    var files = fs.readdirSync(dir);
-    for (var i in files){
-        var name = dir + '/' + files[i];
-        if (fs.statSync(name).isDirectory()){
-            if(name.indexOf('/dev/fd') >= 0) {
-              console.log('skip: ' + name);
-              files_.push(name);
-            }
-            else {
-              console.log('dir: ' + name);
-              getFiles(name, files_);
-            }
-        } else {
-            files_.push(name);
-        }
-    }
-    return files_;
+var lumiDevice = require('./lumi_raspberrypi.js');
+lumiDevice.open();
+
+var WIDTH = 32;
+var HEIGHT = 32;
+
+var evenBuffer = new Buffer(WIDTH * HEIGHT * 3);
+var oddBuffer = new Buffer(WIDTH * HEIGHT * 3);
+
+for(var y=0; y < HEIGHT; y++) {
+  for(var x=0; x < WIDTH; x++) {
+    var pos = (y * WIDTH + x);
+    var fPos = pos * 3;
+    evenBuffer[fPos    ] = (y % 2 === 0) ? 0x00 : 0xFF; // R
+    evenBuffer[fPos + 1] = (y % 2 === 0) ? 0x00 : 0xFF; // G
+    evenBuffer[fPos + 2] = (y % 2 === 0) ? 0x00 : 0xFF; // B
+
+    oddBuffer[fPos    ] = (y % 2 === 1) ? 0x00 : 0xFF; // R
+    oddBuffer[fPos + 1] = (y % 2 === 1) ? 0x00 : 0xFF; // G
+    oddBuffer[fPos + 2] = (y % 2 === 1) ? 0x00 : 0xFF; // B
+  }
 }
 
-console.log('Listing /dev/*');
-console.log(getFiles('/dev'));
+var DELAY = 1000/25;
+var odd = true;
+setInterval(function() {
+  odd = !odd;
+  lumiDevice.sendFrame(odd ? oddBuffer : evenBuffer);
+}, DELAY);
