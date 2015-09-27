@@ -22,6 +22,7 @@
   "main":"app.js",
   "scripts": {
     "preinstall": "bash deps.sh",
+    "prestart": "echo -n \"Node version:\" && node -v",
     "start": "node app.js"
   }
 }
