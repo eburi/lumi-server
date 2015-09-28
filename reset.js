@@ -1,5 +1,5 @@
 'use strict';
 
-var lumiDevice = require('./lumi_raspberrypi.js');
-lumiDevice.open();
+var lumiDevice = require('./lib/lumi_raspberrypi.js');
+lumiDevice.openPort();
 lumiDevice.reset();

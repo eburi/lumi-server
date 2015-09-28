@@ -1,7 +1,7 @@
 'use strict';
 
-var lumiDevice = require('./lumi_raspberrypi.js');
-lumiDevice.open();
+var lumiDevice = require('./lib/lumi_raspberrypi.js');
+lumiDevice.openPort();
 
 var WIDTH = 32;
 var HEIGHT = 32;
@@ -13,19 +13,24 @@ for(var y=0; y < HEIGHT; y++) {
   for(var x=0; x < WIDTH; x++) {
     var pos = (y * WIDTH + x);
     var fPos = pos * 3;
-    evenBuffer[fPos    ] = (y % 2 === 0) ? 0x00 : 0x80; // R
-    evenBuffer[fPos + 1] = (y % 2 === 0) ? 0x00 : 0x80; // G
-    evenBuffer[fPos + 2] = (y % 2 === 0) ? 0x00 : 0x80; // B
+    var oddLine = (y % 2 === 0);
+    evenBuffer[fPos    ] = !oddLine ? 0x00 : 0x80; // R
+    evenBuffer[fPos + 1] = !oddLine ? 0x00 : 0x00; // G
+    evenBuffer[fPos + 2] = !oddLine ? 0x00 : 0x00; // B
 
-    oddBuffer[fPos    ] = (y % 2 === 1) ? 0x00 : 0x80; // R
-    oddBuffer[fPos + 1] = (y % 2 === 1) ? 0x00 : 0x80; // G
-    oddBuffer[fPos + 2] = (y % 2 === 1) ? 0x00 : 0x80; // B
+    oddBuffer[fPos    ] = oddLine ? 0x00 : 0x80; // R
+    oddBuffer[fPos + 1] = oddLine ? 0x00 : 0x00; // G
+    oddBuffer[fPos + 2] = oddLine ? 0x00 : 0x00; // B
   }
 }
 
-var DELAY = 1000/25;
+var DELAY = 5000;
 var odd = true;
-setInterval(function() {
+
+function printFrame() {
   odd = !odd;
   lumiDevice.sendFrame(odd ? oddBuffer : evenBuffer);
-}, DELAY);
+}
+
+printFrame();
+setInterval(printFrame, DELAY, true);

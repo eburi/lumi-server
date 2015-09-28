@@ -4,57 +4,34 @@
  * Module dependencies.
  */
 
-var express = require('express')
-  , http = require('http')
-  , sketches = require('./routes/sketches')
-  , conf = require('./lib/config')()
-  , app = express()
-  , server = http.createServer(app)
-  , io = require('socket.io').listen(server)
-  , lumi = require('./lib/lumi')
-  , sketchRunner = require('./lib/sketch_runner')
-  , bodyParser = require('body-parser')
-  , favicon = require('serve-favicon')
-  , morgan  = require('morgan')
-  , methodOverride = require('method-override')
-  , serveStatic = require('serve-static')
-  , errorhandler = require('errorhandler')
-  ;
-
-io.configure('production', function(){
-    io.enable('browser client etag');
-    io.set('log level', 1);
-
-    io.set('heartbeats', false);
-
-    io.set('transports', [
-        'websocket'
-        , 'flashsocket'
-        , 'htmlfile'
-        , 'xhr-polling'
-        , 'jsonp-polling'
-    ]);
-});
-
-io.configure('development', function(){
-    io.set('log level', 1);
-    io.set('transports', ['websocket']);
-});
+var conf = require('./lib/config')();
+var app = require('express')();
+var http = require('http').Server(app);
+var sketches = require('./routes/sketches');
+var io = require('socket.io')(http);
+var lumi = require('./lib/lumi');
+var sketchRunner = require('./lib/sketch_runner');
+var bodyParser = require('body-parser');
+var favicon = require('serve-favicon');
+var morgan  = require('morgan');
+var methodOverride = require('method-override');
+var serveStatic = require('serve-static');
+var errorhandler = require('errorhandler');
 
 io.on('connection', function (socket) {
-    var fpscStartTime = Date.now();
-    var fpscFramesCounter = 0;
+    // var fpscStartTime = Date.now();
+    // var fpscFramesCounter = 0;
 
     socket.on('frame', function(data) {
         lumi.frame(data.data, socket.id);
 
-        if (Date.now() - fpscStartTime > 1000) {
-            console.log(socket.id, Date.now(),'client-fps: ' + fpscFramesCounter);
-            fpscFramesCounter = 0;
-            fpscStartTime = Date.now();
-        }
-        fpscFramesCounter++;
-
+        // if (Date.now() - fpscStartTime > 1000) {
+        //     console.log('last clientID: ' + socket.id);
+        //     console.log(socket.id, Date.now(),'client-fps: ' + fpscFramesCounter);
+        //     fpscFramesCounter = 0;
+        //     fpscStartTime = Date.now();
+        // }
+        // fpscFramesCounter++;
     });
 
     socket.on('reset', function()  {
@@ -129,6 +106,6 @@ app.get('/play/:name',sketches.play);
 //upsert
 app.post('/sketches', sketches.upsert);
 
-server.listen(app.get('port'), function(){
+http.listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port'));
 });
