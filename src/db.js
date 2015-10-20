@@ -1,3 +1,4 @@
+'use strict';
 
 var mongo = require('mongoskin')
   , conf  = require('./config')()
@@ -41,5 +42,4 @@ module.exports = function () {
   db.bind('sketches');
 
   return api;
-
 };

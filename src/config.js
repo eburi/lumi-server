@@ -1,10 +1,9 @@
+'use strict';
 
 var fs = require('fs')
   , cache; //cache parsed config object
 
-
 function config () {
-
   if (cache) {
     return cache;
   }
@@ -24,7 +23,6 @@ function config () {
   }
 
   return cache;
-
 }
 
 module.exports = config;

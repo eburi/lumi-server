@@ -8,8 +8,6 @@ var conf = require('./lib/config')();
 var app = require('express')();
 var http = require('http').Server(app);
 var sketches = require('./routes/sketches');
-var io = require('socket.io')(http);
-var lumi = require('./lib/lumi');
 var sketchRunner = require('./lib/sketch_runner');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
@@ -18,6 +16,10 @@ var methodOverride = require('method-override');
 var serveStatic = require('serve-static');
 var errorhandler = require('errorhandler');
 
+var lumiSocket = require('');
+
+var lumi = require('./lib/lumi');
+var io = require('socket.io')(http);
 io.on('connection', function (socket) {
     // var fpscStartTime = Date.now();
     // var fpscFramesCounter = 0;
@@ -74,6 +76,10 @@ io.on('connection', function (socket) {
     });
 });
 
+var spiDevice = process.env.SPI_DEVICE || conf.device;
+console.log('Using device: ' + spiDevice);
+lumi.openPort(spiDevice);
+
 sketchRunner.addListener(function(name,state, id){
     console.log('SKETCH_RUNNER: id:' + id + ' name:' + name + ' state:'+state);
     io.sockets.emit('rskstate', { name: name, state: state, id: id });
@@ -92,9 +98,6 @@ app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(serveStatic('public/'));
 app.use(errorhandler());
 
-var spiDevice = process.env.SPI_DEVICE || conf.device;
-console.log('Using device: ' + spiDevice);
-lumi.openPort(spiDevice);
 
 //Routes
 app.get('/', sketches.get);

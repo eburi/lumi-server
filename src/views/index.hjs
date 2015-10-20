@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Lumi</title>
+    <link href='/styles.css' rel="stylesheet">
+  </head>
+  <body>
+	<h1 id="main-title">Lumi</h1>
+    <div id="react-main-mount">
+      {{ reactOutput }}
+    </div>
+
+  	<!-- comment out main.js to see server side only rendering -->
+  	<script src="/main.js"></script>
+  </body>
+</html>

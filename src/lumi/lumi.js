@@ -37,14 +37,14 @@ function createPaletteDefinition(colors) {
 // to be [0,0,0]
 var activePalette = null;
 function setPalette(pal) {
-  if( ! pal instanceof Array)  {
+  if(!Array.isArray(pal))  {
     console.log('setPalette: argument must be an array of array');
     return;
   }
 
   var idx;
   for(idx=0; idx<pal.length; idx++) {
-    if( ! pal[idx] instanceof Array || pal[idx].length !== 3) {
+    if( !Array.isArray(pal[idx]) || pal[idx].length !== 3) {
       console.log('setPalette: argument must be an array of arrays of size 3. [[R1,G1,B1],[R2,G2,B2],[R3,G3,B3]]');
       return;
     }
