@@ -1,0 +1,36 @@
+{
+  "name": "lumi-resin",
+  "description": "",
+  "author": "Erich Buri <erich.buri@gmail.com>",
+  "version": "0.1.1",
+  "private": true,
+  "dependencies": {
+    "body-parser": "^1.3.1",
+    "cookie-parser": "~1.0.0",
+    "ejs": "~0.8.5",
+    "express": "~4.13.3",
+    "griddle-react": "^0.1.19",
+    "hjs": "0.0.6",
+    "mongodb": "^1.4.30",
+    "mongoskin": "^1.4.12",
+    "node-jsx": "~0.2.0",
+    "path": "*",
+    "react": "~0.12.0",
+    "serialport": "^1.4.10",
+    "socket.io": "^1.3.7"
+  },
+  "devDependencies": {
+    "browserify": "~3.20.0",
+    "gulp": "~3.8.9",
+    "gulp-browserify": "~0.5.0",
+    "gulp-concat": "~2.4.1",
+    "react-tools": "^0.12.0",
+    "reactify": "0.15.2"
+  },
+  "main": "app.js",
+  "scripts": {
+    "preinstall": "bash deps.sh",
+    "prestart": "echo -n \"Node version:\" && node -v",
+    "start": "node app.js"
+  }
+}
