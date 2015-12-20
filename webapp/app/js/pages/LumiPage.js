@@ -5,11 +5,11 @@ import {Link}        from 'react-router';
 import DocumentTitle from 'react-document-title';
 import RaisedButton  from 'material-ui/lib/raised-button';
 
-const SearchPage = React.createClass({
+const LumiPage = React.createClass({
 
-  propTypes: {
-    currentUser: React.PropTypes.object.isRequired
-  },
+  // propTypes: {
+  //   currentUser: React.PropTypes.object.isRequired
+  // },
 
   render() {
     return (
@@ -34,4 +34,4 @@ const SearchPage = React.createClass({
 
 });
 
-export default SearchPage;
+export default LumiPage;

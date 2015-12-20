@@ -16,7 +16,7 @@ var methodOverride = require('method-override');
 var serveStatic = require('serve-static');
 var errorhandler = require('errorhandler');
 
-var lumiSocket = require('');
+// var lumiSocket = require('');
 
 var lumi = require('./lib/lumi');
 var io = require('socket.io')(http);
