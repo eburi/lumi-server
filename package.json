@@ -31,7 +31,10 @@
   "main": "app.js",
   "scripts": {
     "preinstall": "bash deps.sh",
-    "prestart": "echo -n \"Node version:\" && node -v",
+    "prestart": "echo -n \"Node version:\" && node -v && bash start.sh",
     "start": "node app.js"
+  },
+  "engines": {
+    "node": "0.12.7"
   }
 }
