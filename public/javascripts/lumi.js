@@ -7,7 +7,7 @@ var lumi = function(){
 	var stateListeners = [];
 
 	if(typeof io != 'undefined'){
-		var socket = io.connect();
+		var socket = io.connect('http://192.168.1.102:3001/');
 	} else {
 		return false;
 	}
