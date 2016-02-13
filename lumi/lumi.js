@@ -97,7 +97,6 @@ var iframesByClientId = {};
 var paletteDefinitionsByClientId = {};
 
 exports.frame = function(data, clientId) {
-  console.log('client ' + clientId + ' sent frame');
   if(data.length !==  WIDTH * HEIGHT * 3) {
     console.log('client ' + clientId +  'sends bogous frame:', data);
     return;

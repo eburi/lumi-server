@@ -16,39 +16,16 @@ console.log('ZEROS_NEEDED: ' + ZEROS_NEEDED);
 var zeros = new Buffer(ZEROS_NEEDED);
 zeros.fill(0x00);
 
-var gamma = new Buffer([
-  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
-  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,
-  1,  1,  1,  1,  1,  1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,
-  2,  3,  3,  3,  3,  3,  3,  3,  4,  4,  4,  4,  4,  5,  5,  5,
-  5,  6,  6,  6,  6,  7,  7,  7,  7,  8,  8,  8,  9,  9,  9, 10,
-  10, 10, 11, 11, 11, 12, 12, 13, 13, 13, 14, 14, 15, 15, 16, 16,
-  17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22, 23, 24, 24, 25,
-  25, 26, 27, 27, 28, 29, 29, 30, 31, 32, 32, 33, 34, 35, 35, 36,
-  37, 38, 39, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 50,
-  51, 52, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 66, 67, 68,
-  69, 70, 72, 73, 74, 75, 77, 78, 79, 81, 82, 83, 85, 86, 87, 89,
-  90, 92, 93, 95, 96, 98, 99,101,102,104,105,107,109,110,112,114,
-  115,117,119,120,122,124,126,127,129,131,133,135,137,138,140,142,
-  144,146,148,150,152,154,156,158,160,162,164,167,169,171,173,175,
-  177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
-  215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 ]);
-
-console.log('gamma defined:');
-debugOutFrame(gamma);
-// gamma-table calculation... 
+// gamma-table calculation...
+var gamma = new Buffer(256);
 for(var i=0; i<256; i++) {
     gamma[i] = 0x80 | Math.floor( Math.pow( i / 255.0, 2.5) * 127 + 0.5);
 }
-console.log('gamma calculated:');
-debugOutFrame(gamma);
-
 
 // lumi LEDS are GRB, not RGB - this is the mapping (GRB[0] <= RGB[1], GRB[1] <= RGB[0], GRB[2] <= RGB[2])
 // var colorOffsetMap = [1, 0, 2];
 
 function openDevice(deviceName) {
-  console.log('openDevice: ' + deviceName);
   spi = SPI.initialize(deviceName);
 
   console.log('device infos:');
@@ -60,12 +37,9 @@ function openDevice(deviceName) {
 
   var bitOrder = spi.bitOrder();
   console.log('bit-order MSB_FIRST: ' + (bitOrder === SPI.order.MSB_FIRST) + ' LSB_FIRST: ' + (bitOrder === SPI.order.LSB_FIRST));
-
-
 }
 
 function open() {
-  console.log('open called');
   openDevice(DEVICE);
 }
 
@@ -107,18 +81,12 @@ function translateFrameForLedWall(data) {
       buffer[buffPos + 0] = gamma[data[imagePos + 1]];
       buffer[buffPos + 1] = gamma[data[imagePos + 0]];
       buffer[buffPos + 2] = gamma[data[imagePos + 2]];
-      
-      //buffer[buffPos + 0] = data[imagePos + 1];
-      //buffer[buffPos + 1] = data[imagePos + 0];
-      //buffer[buffPos + 2] = data[imagePos + 2];
     }
   }
   return buffer;
 }
 
-var frameCounter = 0;
 function sendFrame(data) {
-  var frame = frameCounter++;
   if (!(data instanceof Buffer) || data.length !== WIDTH * HEIGHT * 3) {
       console.log('sendFrame: Called with a frame I can\'t process. Size: ' + data.length);
       return;
@@ -132,14 +100,12 @@ function sendFrame(data) {
   // console.log('Before: ' + data.length);
   // debugOutFrame(data);
   var buffer = translateFrameForLedWall(data);
-  console.log('After: ' + buffer.length + ' zeros: ' + zeros.length);
-  debugOutFrame(buffer);
+  // console.log('After: ' + buffer.length + ' zeros: ' + zeros.length);
+  // debugOutFrame(buffer);
 
   // append zeros
   buffer = Buffer.concat([buffer, zeros]);
-  console.log(Date.now() + ' - frame ' + frame + ' ready');
   spi.write(buffer, function (err) {
-    console.log(Date.now() + ' - frame ' + frame + ' sent');
     if (err) {
       console.log('failed to transfer data!');
       console.error(err);
@@ -187,7 +153,6 @@ function debugOutFrame(frame) {
     //     console.log(line);
     // }
 }
-
 
 exports.openPort = open;
 exports.sendFrame = sendFrame;
@@ -248,7 +213,7 @@ function updateFrameLine() {
 var color = 0;
 function blink() {
   color = (color === 0) ? 0xAA : 0x00;
-  console.log(color);
+  console.log('color: ' + color);
   buffer.fill(color);
   sendFrame(buffer);
   setTimeout(blink, 500);
