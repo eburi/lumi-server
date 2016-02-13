@@ -1,13 +1,13 @@
 'use strict';
 
-var fs = require('fs');
+var SPI = require('pi-spi');
 
 var WIDTH = 32;
 var HEIGHT = 32;
 var DEVICE = '/dev/spidev0.0';
 
 // var palette = null;
-var stream = null;
+var spi = null;
 
 var ZEROS_NEEDED = (3 * Math.floor(((WIDTH * HEIGHT + 63) / 64)));
 var zeros = new Buffer(ZEROS_NEEDED);
@@ -33,33 +33,23 @@ var gamma = new Buffer([
 
 debugOutFrame(gamma);
 // gamma-table calculation... not working properly.
-for(var i=0; i<256; i++) {
-    gamma[i] = 0x80 | Math.floor( Math.pow( i / 255.0, 2.5) * 127 + 0.5);
-}
-debugOutFrame(gamma);
+// for(var i=0; i<256; i++) {
+//     gamma[i] = 0x80 | Math.floor( Math.pow( i / 255.0, 2.5) * 127 + 0.5);
+// }
+// debugOutFrame(gamma);
 
 
 // lumi LEDS are GRB, not RGB - this is the mapping (GRB[0] <= RGB[1], GRB[1] <= RGB[0], GRB[2] <= RGB[2])
-var colorOffsetMap = [1, 0, 2];
+// var colorOffsetMap = [1, 0, 2];
 
 function openDevice(deviceName) {
-    console.log('openDevice: ' + deviceName);
-    stream = fs.createWriteStream(deviceName);
-    stream.on('error', function(error) {
-        console.error('Error on output stream: ', error);
-        stream = null;
-    });
+  console.log('openDevice: ' + deviceName);
+  spi = SPI.initialize(deviceName);
 }
 
 function open() {
-    // var deviceName = '/dev/spidev0.0';
-    if(stream !== null) {
-        stream.end(null,null,function() {
-            openDevice(DEVICE);
-        });
-    } else {
-        openDevice(DEVICE);
-    }
+  console.log('open called');
+  openDevice(DEVICE);
 }
 
 function translateFrameForLedWall(data) {
@@ -113,7 +103,7 @@ function sendFrame(data) {
       return;
   }
 
-  if (stream === null) {
+  if (spi === null) {
       open();
       return;
   }
@@ -123,20 +113,16 @@ function sendFrame(data) {
   var buffer = translateFrameForLedWall(data);
   // console.log('After: ' + buffer.length + ' zeros: ' + zeros.length);
   // debugOutFrame(buffer);
-  var result = stream.write(buffer, function(err) {
+
+  // append zeros
+  buffer = Buffer.concat([buffer, zeros]);
+
+  spi.transfer(buffer, buffer.length, function (err) {
     if (err) {
-      console.log('Write Error: ' + err);
-      return;
+      console.log('failed to transfer data!');
+      console.error(err);
     }
-    stream.write(zeros,function(err) {
-      if (err) {
-        console.log('Write Error: ' + err);
-        return;
-      }
-      // console.log('data written! (' + err + ')');
-    });
   });
-  // console.log('result:' + result);
 }
 
 function setColor(buf, r, g, b) {
@@ -188,6 +174,7 @@ exports.setColor = setColor;
 exports.debugOutFrame = debugOutFrame;
 
 
+// -----------------------------------------------------------------------------
 // Test-Code
 var type = 0;
 var idx = 0;
