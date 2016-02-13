@@ -4,11 +4,11 @@
  * Module dependencies.
  */
 
-var conf = require('./lib/config')();
+var conf = require('./lumi/config')();
 var app = require('express')();
 var http = require('http').Server(app);
 var sketches = require('./routes/sketches');
-var sketchRunner = require('./lib/sketch_runner');
+var sketchRunner = require('./lumi/sketch_runner');
 var bodyParser = require('body-parser');
 var favicon = require('serve-favicon');
 var morgan  = require('morgan');
@@ -18,7 +18,7 @@ var errorhandler = require('errorhandler');
 
 // var lumiSocket = require('');
 
-var lumi = require('./lib/lumi');
+var lumi = require('./lumi/lumi');
 var io = require('socket.io')(http);
 io.on('connection', function (socket) {
     // var fpscStartTime = Date.now();
