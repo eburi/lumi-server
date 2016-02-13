@@ -10,6 +10,9 @@ var DEVICE = '/dev/spidev0.0';
 var spi = null;
 
 var ZEROS_NEEDED = (3 * Math.floor(((WIDTH * HEIGHT + 63) / 64)));
+
+console.log('ZEROS_NEEDED: ' + ZEROS_NEEDED);
+
 var zeros = new Buffer(ZEROS_NEEDED);
 zeros.fill(0x00);
 
@@ -31,12 +34,14 @@ var gamma = new Buffer([
   177,180,182,184,186,189,191,193,196,198,200,203,205,208,210,213,
   215,218,220,223,225,228,231,233,236,239,241,244,247,249,252,255 ]);
 
+console.log('gamma defined:');
 debugOutFrame(gamma);
-// gamma-table calculation... not working properly.
-// for(var i=0; i<256; i++) {
-//     gamma[i] = 0x80 | Math.floor( Math.pow( i / 255.0, 2.5) * 127 + 0.5);
-// }
-// debugOutFrame(gamma);
+// gamma-table calculation... 
+for(var i=0; i<256; i++) {
+    gamma[i] = 0x80 | Math.floor( Math.pow( i / 255.0, 2.5) * 127 + 0.5);
+}
+console.log('gamma calculated:');
+debugOutFrame(gamma);
 
 
 // lumi LEDS are GRB, not RGB - this is the mapping (GRB[0] <= RGB[1], GRB[1] <= RGB[0], GRB[2] <= RGB[2])
@@ -47,6 +52,7 @@ function openDevice(deviceName) {
   spi = SPI.initialize(deviceName);
 
   console.log('device infos:');
+  //spi.clockSpeed(2000000);
   console.log('clock-speed: ' + spi.clockSpeed());
 
   var mode = spi.dataMode();
@@ -101,10 +107,12 @@ function translateFrameForLedWall(data) {
       buffer[buffPos + 0] = gamma[data[imagePos + 1]];
       buffer[buffPos + 1] = gamma[data[imagePos + 0]];
       buffer[buffPos + 2] = gamma[data[imagePos + 2]];
+      
+      //buffer[buffPos + 0] = data[imagePos + 1];
+      //buffer[buffPos + 1] = data[imagePos + 0];
+      //buffer[buffPos + 2] = data[imagePos + 2];
     }
   }
-
-
   return buffer;
 }
 
@@ -124,13 +132,13 @@ function sendFrame(data) {
   // console.log('Before: ' + data.length);
   // debugOutFrame(data);
   var buffer = translateFrameForLedWall(data);
-  // console.log('After: ' + buffer.length + ' zeros: ' + zeros.length);
-  // debugOutFrame(buffer);
+  console.log('After: ' + buffer.length + ' zeros: ' + zeros.length);
+  debugOutFrame(buffer);
 
   // append zeros
   buffer = Buffer.concat([buffer, zeros]);
   console.log(Date.now() + ' - frame ' + frame + ' ready');
-  spi.write(buffer, buffer.length, function (err) {
+  spi.write(buffer, function (err) {
     console.log(Date.now() + ' - frame ' + frame + ' sent');
     if (err) {
       console.log('failed to transfer data!');
@@ -239,7 +247,8 @@ function updateFrameLine() {
 
 var color = 0;
 function blink() {
-  color = (color === 0) ? 0xFF : 0x00;
+  color = (color === 0) ? 0xAA : 0x00;
+  console.log(color);
   buffer.fill(color);
   sendFrame(buffer);
   setTimeout(blink, 500);
