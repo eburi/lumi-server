@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../lib/db')();
+var db = require('../lumi/db')();
 
 exports.upsert = function (req, res) {
 
