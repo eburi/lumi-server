@@ -531,7 +531,7 @@ $(document).ready(function(){
 		var canvasCtx = drawCanvas[0].getContext('2d');
 		var settings = [];
 			// Contains the list of setting objects.
-		var sendFrameInterval = setInterval(sendFrame, 18);
+		var sendFrameInterval = setInterval(sendFrame, 40);
 			// Initialises an interval which sends frames to the LED wall.
 			// 18ms roughly equal a frame rate of 60fps.
 			// Note that this will send frames even when nothing has changed.
