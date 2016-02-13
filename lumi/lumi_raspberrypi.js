@@ -45,6 +45,17 @@ debugOutFrame(gamma);
 function openDevice(deviceName) {
   console.log('openDevice: ' + deviceName);
   spi = SPI.initialize(deviceName);
+
+  console.log('device infos:');
+  console.log('clock-speed: ' + spi.clockSpeed());
+
+  var mode = spi.dataMode();
+  console.log('data mode CPHA: ' + (mode === SPI.mode.CPHA) + ' CPOL: ' + (mode === SPI.mode.CPOL));
+
+  var bitOrder = spi.bitOrder();
+  console.log('bit-order MSB_FIRST: ' + (bitOrder === SPI.order.MSB_FIRST) + ' LSB_FIRST: ' + (bitOrder === SPI.order.LSB_FIRST));
+
+
 }
 
 function open() {
@@ -97,7 +108,9 @@ function translateFrameForLedWall(data) {
   return buffer;
 }
 
+var frameCounter = 0;
 function sendFrame(data) {
+  var frame = frameCounter++;
   if (!(data instanceof Buffer) || data.length !== WIDTH * HEIGHT * 3) {
       console.log('sendFrame: Called with a frame I can\'t process. Size: ' + data.length);
       return;
@@ -116,8 +129,9 @@ function sendFrame(data) {
 
   // append zeros
   buffer = Buffer.concat([buffer, zeros]);
-
-  spi.transfer(buffer, buffer.length, function (err) {
+  console.log(Date.now() + ' - frame ' + frame + ' ready');
+  spi.write(buffer, buffer.length, function (err) {
+    console.log(Date.now() + ' - frame ' + frame + ' sent');
     if (err) {
       console.log('failed to transfer data!');
       console.error(err);
