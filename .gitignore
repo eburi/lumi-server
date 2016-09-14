@@ -9,3 +9,5 @@ lumi_log.txt
 
 # Log files.
 *.log
+
+.idea/
